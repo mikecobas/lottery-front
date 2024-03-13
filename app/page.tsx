@@ -1,95 +1,62 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+import Navbar from '@/components/Navbar/Navbar';
+import NavbarFooter from '@/components/Navbar/NavbarFooter';
+import { AppShell, Avatar, Burger, Center, Group, NavLink, ScrollArea, Skeleton } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
+import { IconChevronRight } from '@tabler/icons-react';
+import { useState } from 'react';
+import Home from './dashboard/home/page';
 
-export default function Home() {
+
+export default function HomePage() {
+
+  const [opened, setOpened] = useState(false)
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <AppShell
+      layout="alt"
+      header={{ height: 60 }}
+      navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !opened } }}
+      padding="md"
+    >
+      <AppShell.Header>
+        <Group h="100%" px="md">
+          <Burger
+            opened={opened}
+            onClick={() => setOpened(!opened)}
+            hiddenFrom="sm"
+            size="sm"
+          />
+        </Group>
+      </AppShell.Header>
+      <AppShell.Navbar p="md">
+        <AppShell.Section>
+          <Group>
+            <Burger opened={opened} onClick={() => setOpened(!opened)} hiddenFrom="sm" size="sm" />
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+          </Group>
+        </AppShell.Section>
+        <AppShell.Section grow my="md" component={ScrollArea}>
+          <Navbar />
+        </AppShell.Section>
+        <AppShell.Section>
+          <Center>
+            <NavbarFooter />
+          </Center>
+          <NavLink
+            label="Asaed Reyes Medina"
+            description="asaedreyesmedina@gmail.com"
+            rightSection={<IconChevronRight />}
+            leftSection={
+              <Avatar color="cyan" radius="xl">
+                ARM
+              </Avatar>
+            }
+          />
+        </AppShell.Section>
+      </AppShell.Navbar>
+      <AppShell.Main>
+          <Home />
+      </AppShell.Main>
+    </AppShell>
   );
 }

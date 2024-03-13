@@ -6,6 +6,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { IconChevronRight } from '@tabler/icons-react';
 import { useState } from 'react';
 import Home from './dashboard/home/page';
+import Sorteos from './dashboard/sorteos/page';
 
 
 export default function HomePage() {
@@ -55,7 +56,7 @@ export default function HomePage() {
         </AppShell.Section>
       </AppShell.Navbar>
       <AppShell.Main>
-          <Home />
+          <Sorteos/>
       </AppShell.Main>
     </AppShell>
   );

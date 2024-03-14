@@ -7,16 +7,20 @@ import { IconChevronRight } from '@tabler/icons-react';
 import { useState } from 'react';
 import Home from './dashboard/home/page';
 import Sorteos from './dashboard/sorteos/page';
+import PreviewSorteos from '@/components/Previews/PreviewSorteos';
 
 
 export default function HomePage() {
 
   const [opened, setOpened] = useState(false)
+  const [previewImg, setPreviewImg] = useState({ name: "Sorteo 1", status: true, previewImg: <Skeleton height={160} /> })
   return (
     <AppShell
       layout="alt"
       header={{ height: 60 }}
       navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !opened } }}
+      aside={{ width: 300, breakpoint: 'md', collapsed: { desktop: false, mobile: true } }}
+
       padding="md"
     >
       <AppShell.Header>
@@ -56,8 +60,11 @@ export default function HomePage() {
         </AppShell.Section>
       </AppShell.Navbar>
       <AppShell.Main>
-          <Sorteos/>
+        <Sorteos />
       </AppShell.Main>
+      <AppShell.Aside p="md">
+        <PreviewSorteos name={previewImg.name} status={previewImg.status} previewImg={previewImg.previewImg} />
+      </AppShell.Aside>
     </AppShell>
   );
 }

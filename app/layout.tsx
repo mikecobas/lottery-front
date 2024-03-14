@@ -2,6 +2,7 @@ import '@mantine/core/styles.css';
 import React from 'react';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 import { theme } from '../theme';
+import { SorteoProvider } from '@/contexts/PreviewContext';
 
 export const metadata = {
   title: 'Mantine Next.js template',
@@ -9,6 +10,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }: { children: any }) {
+
   return (
     <html lang="en">
       <head>
@@ -20,7 +22,11 @@ export default function RootLayout({ children }: { children: any }) {
         />
       </head>
       <body>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <MantineProvider theme={theme}>
+          <SorteoProvider>
+            {children}
+          </SorteoProvider>
+        </MantineProvider>
       </body>
     </html>
   );

@@ -1,5 +1,5 @@
-import { Anchor, Badge, Button, Card, Center, Grid, Group, Image, Text } from '@mantine/core'
 import React from 'react'
+import { Anchor, Badge, Button, Card, Center, Grid, Group, Image, Text } from '@mantine/core'
 
 const Home = () => {
     const cardContent = [

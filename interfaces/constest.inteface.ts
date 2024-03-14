@@ -1,19 +1,17 @@
-export interface ConstestResponse {
+export interface ContestResponse {
   status: number;
   error: boolean;
   msg: string;
-  payload: Contest[];
+  payload: Contest[] | Contest;
 }
 
 export interface Contest {
-  name: string;
-  description: string;
-  status: boolean;
-  contestId: string;
-  orderToLot: number;
-  image: string;
-  markAsDelivery: boolean;
   _id?: string;
+  name: string;
+  status: boolean;
+  rounds?: number;
+  contestDate?: string;
+  createdBy?: string;
+  image?: string;
   createdAt?: string;
-  updatedAt?: string;
 }

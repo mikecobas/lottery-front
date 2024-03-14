@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Grid, Select, TextInput, Text, Image, SimpleGrid, Group, rem, Center, Card } from '@mantine/core'
+import { Grid, Select, TextInput, Text, Image, SimpleGrid, Group, rem, Center, Card, Button, Textarea } from '@mantine/core'
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath, DropzoneProps } from '@mantine/dropzone';
 import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react';
 import { SorteoContext } from '@/contexts/PreviewContext';
@@ -19,19 +19,22 @@ const Sorteos = (props: Partial<DropzoneProps>) => {
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch({ type: 'SET_NAME', payload: event.target.value });
     };
-
-
-
-    const handleStatusChange = (value: string) => {
+    const handleStatusChange = (value: string | null) => {
         if (value === 'Activo') {
             dispatch({ type: 'SET_STATUS', payload: true });
         } else {
             dispatch({ type: 'SET_STATUS', payload: false });
         }
     };
+    const handleRoundsChange = (event: any) => {
+        dispatch({ type: 'SET_ROUNDS', payload: event.target.value });
+    }
+    const handleDescriptionChange = (event: any) => {
+        dispatch({ type: 'SET_DESCRIPTION', payload: event.target.value });
+    }
     const previews = files.map((file, index) => {
         const imageUrl = URL.createObjectURL(file);
-        return <Image key={index} src={imageUrl} onLoad={() => URL.revokeObjectURL(imageUrl)} />;
+        return <Image height={200} width={200} key={index} src={imageUrl} onLoad={() => URL.revokeObjectURL(imageUrl)} />;
     });
     return (
         <>
@@ -39,15 +42,24 @@ const Sorteos = (props: Partial<DropzoneProps>) => {
                 <Grid.Col span={{ base: 12, md: 6, lg: 5 }}>
                     <TextInput label="Nombre del sorteo" withAsterisk placeholder='Devsorteos 1' onChange={handleNameChange} />
                 </Grid.Col>
-                <Grid.Col span={{ base: 12, md: 6, lg: 3 }}>
-                    <TextInput label="Numero de rondas" withAsterisk placeholder='1' type='number' />
-                </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
                     <Select
                         label="Estado del sorteo"
-                        placeholder="Activo | Pendiente | Finalizado"
+                        placeholder="Activo | Finalizado"
                         data={['Activo', 'Finalizado']}
-                        onValueChange={handleStatusChange}
+                        onChange={handleStatusChange}
+                    />
+                </Grid.Col>
+                <Grid.Col span={{ base: 12, md: 6, lg: 3 }}>
+                    <TextInput label="Numero de rondas" withAsterisk placeholder='1' type='number' onChange={handleRoundsChange} />
+                </Grid.Col>
+
+                <Grid.Col span={{ base: 12, md: 6, lg: 12 }}>
+                    <Textarea
+                        withAsterisk
+                        label="Descripcion del sorteo"
+                        placeholder="Detalles del sorteo"
+                        onChange={handleDescriptionChange}
                     />
                 </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 6, lg: 12 }}>
@@ -95,6 +107,14 @@ const Sorteos = (props: Partial<DropzoneProps>) => {
                             {previews}
                         </Center>
                     </SimpleGrid>
+                </Grid.Col>
+                <Grid.Col span={{ base: 12, md: 6, lg: 12 }}>
+                    <Group justify="end">
+
+                        <Button>Publicar sorteo</Button>
+
+
+                    </Group>
                 </Grid.Col>
             </Grid>
         </>

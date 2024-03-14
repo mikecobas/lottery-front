@@ -2,10 +2,8 @@
 import Navbar from '@/components/Navbar/Navbar';
 import NavbarFooter from '@/components/Navbar/NavbarFooter';
 import { AppShell, Avatar, Burger, Center, Group, NavLink, ScrollArea, Skeleton } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 import { IconChevronRight } from '@tabler/icons-react';
 import { useState } from 'react';
-import Home from './dashboard/home/page';
 import Sorteos from './dashboard/sorteos/page';
 import PreviewSorteos from '@/components/Previews/PreviewSorteos';
 
@@ -62,7 +60,7 @@ export default function HomePage() {
       <AppShell.Main>
         <Sorteos />
       </AppShell.Main>
-      <AppShell.Aside p="md">
+      <AppShell.Aside p="xs" py={60}>
         <PreviewSorteos name={previewImg.name} status={previewImg.status} previewImg={previewImg.previewImg} />
       </AppShell.Aside>
     </AppShell>

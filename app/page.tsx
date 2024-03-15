@@ -1,17 +1,18 @@
 'use client';
+import { useState } from 'react';
 import Navbar from '@/components/Navbar/Navbar';
 import NavbarFooter from '@/components/Navbar/NavbarFooter';
-import { AppShell, Avatar, Burger, Center, Group, NavLink, ScrollArea, Skeleton } from '@mantine/core';
+import { AppShell, Avatar, Burger, Center, Group, NavLink, ScrollArea, Skeleton, Title } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
-import { useState } from 'react';
 import Sorteos from './dashboard/sorteos/page';
 import PreviewSorteos from '@/components/Previews/PreviewSorteos';
+import Login from '@/components/auth/Login';
+import Register from '@/components/auth/Register';
 
 
 export default function HomePage() {
 
   const [opened, setOpened] = useState(false)
-  const [previewImg, setPreviewImg] = useState({ name: "Sorteo 1", status: true, previewImg: <Skeleton height={160} /> })
   return (
     <AppShell
       layout="alt"
@@ -58,10 +59,11 @@ export default function HomePage() {
         </AppShell.Section>
       </AppShell.Navbar>
       <AppShell.Main>
-        <Sorteos />
+        <Login />
       </AppShell.Main>
-      <AppShell.Aside p="xs" py={60}>
-        <PreviewSorteos name={previewImg.name} status={previewImg.status} previewImg={previewImg.previewImg} />
+      <AppShell.Aside p="xs">
+        <Title order={3} pb={30} pt={10}>Preview:</Title>
+        <PreviewSorteos />
       </AppShell.Aside>
     </AppShell>
   );

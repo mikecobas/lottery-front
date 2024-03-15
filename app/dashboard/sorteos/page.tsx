@@ -5,7 +5,7 @@ import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react';
 import { SorteoContext } from '@/contexts/PreviewContext';
 
 const Sorteos = (props: Partial<DropzoneProps>) => {
-    const { state, dispatch } = useContext(SorteoContext)
+    const { dispatch } = useContext(SorteoContext)
     const [files, setFiles] = useState<FileWithPath[]>([]);
     const handleDrop = (files: FileWithPath[]) => {
         setFiles(files);
@@ -62,7 +62,7 @@ const Sorteos = (props: Partial<DropzoneProps>) => {
                         onChange={handleDescriptionChange}
                     />
                 </Grid.Col>
-                <Grid.Col span={{ base: 12, md: 6, lg: 12 }}>
+                <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
                     <Dropzone
                         onDrop={handleDrop}
                         maxSize={5 * 1024 ** 2}
@@ -101,13 +101,14 @@ const Sorteos = (props: Partial<DropzoneProps>) => {
                             </Group>
                         </Card>
                     </Dropzone>
-
+                    </Grid.Col>
+                    <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
                     <SimpleGrid cols={{ base: 1, sm: 1 }} mt={previews.length > 0 ? 'xl' : 0}>
                         <Center>
                             {previews}
                         </Center>
                     </SimpleGrid>
-                </Grid.Col>
+                    </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 6, lg: 12 }}>
                     <Group justify="end">
 

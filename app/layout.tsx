@@ -5,8 +5,8 @@ import { theme } from '../theme';
 import { SorteoProvider } from '@/contexts/PreviewContext';
 
 export const metadata = {
-  title: 'Mantine Next.js template',
-  description: 'I am using Mantine with Next.js!',
+  title: 'Sorteos app',
+  description: 'Sorteos app DevTalles',
 };
 
 export default function RootLayout({ children }: { children: any }) {

@@ -6,8 +6,8 @@ import classes from './Navbar.module.css'
 const Navbar = () => {
     const itemNavbar = [
         { "title": "Home", "description": "Resumen de sorteos", "link": "/", "icon": IconHome },
-        { "title": "Sorteos", "description": "crea y publica sorteos", "link": "/sorteos", "icon": IconDice5 },
-        { "title": "Premios", "description": "Listado de premios", "link": "/premios", "icon": IconAward },
+        { "title": "Sorteos", "description": "Ver, crear y publicar sorteos", "link": "/sorteos", "icon": IconDice5 },
+        { "title": "Premios", "description": "Ver, crear y publicar premios", "link": "/premios", "icon": IconAward },
         { "title": "Usuarios", "description": "Listado de usuarios", "link": "/usuarios", "icon": IconUser },
         { "title": "Configuración", "description": "Configuración de la aplicación", "link": "/configuracion", "icon": IconSettings }
     ]

@@ -1,73 +1,55 @@
-'use client';
-import { useContext, useState } from 'react';
-import Navbar from '@/components/Navbar/Navbar';
-import NavbarFooter from '@/components/Navbar/NavbarFooter';
-import { AppShell, Avatar, Burger, Center, Group, NavLink, ScrollArea, Skeleton, Title } from '@mantine/core';
-import { IconChevronRight } from '@tabler/icons-react';
-import Sorteos from '@/app/dashboard/sorteos/page';
-import PreviewSorteos from '@/components/Previews/PreviewSorteos';
-import { AuthContext } from '@/contexts/AuthContext'
+'use client'
+import React from 'react'
+import { Anchor, Badge, Button, Card, Center, Grid, Group, Image, Text } from '@mantine/core'
 
+const Home = () => {
+    const cardContent = [
+        { "title": "Sorteo 1", "status": "Activo", "descripción": "Descripción del sorteo 1" },
+        { "title": "Sorteo 2", "status": "Activo", "descripción": "Descripción del sorteo 2" },
+        { "title": "Sorteo 3", "status": "Activo", "descripción": "Descripción del sorteo 3" },
+        { "title": "Sorteo 4", "status": "Activo", "descripción": "Descripción del sorteo 4" }
+    ]
+    return (
+        <>
+            <Group justify='end' style={{ paddingBottom: 16 }} >
+                <Anchor href="https://mantine.dev/" target="_blank" underline="hover">
+                    Mostrar todos los sorteos
+                </Anchor>
+            </Group>
+            <Grid style={{ paddingBottom: 16 }}>
+                {
+                    cardContent.map((item, index) => (
+                        <Grid.Col span={{ base: 12, md: 6, lg: 3 }} key={index}>
+                            <Card shadow="sm" padding="lg" radius="md" withBorder>
+                                <Card.Section>
+                                    <Image
+                                        src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-8.png"
+                                        height={160}
+                                        alt="Norway"
+                                    />
+                                </Card.Section>
 
-export default function HomePage() {
-  const { state } = useContext(AuthContext)
-  const [opened, setOpened] = useState(false)
-  return (
-    <AppShell
-      layout="alt"
-      header={{ height: 60 }}
-      navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !opened } }}
-      aside={{ width: 300, breakpoint: 'md', collapsed: { desktop: false, mobile: true } }}
+                                <Group justify="space-between" mt="md" mb="xs">
+                                    <Text fw={500}>{item.title}</Text>
+                                    <Badge color="green">{item.status}</Badge>
+                                </Group>
 
-      padding="md"
-    >
-      <AppShell.Header>
-        <Group h="100%" px="md">
-          <Burger
-            opened={opened}
-            onClick={() => setOpened(!opened)}
-            hiddenFrom="sm"
-            size="sm"
-          />
-        </Group>
-      </AppShell.Header>
-      <AppShell.Navbar p="md">
-        <AppShell.Section>
-          <Group>
-            <Burger opened={opened} onClick={() => setOpened(!opened)} hiddenFrom="sm" size="sm" />
+                                <Text size="sm" c="dimmed">
+                                    {item.descripción}
+                                </Text>
 
-          </Group>
-        </AppShell.Section>
-        <AppShell.Section grow my="md" component={ScrollArea}>
-          <Navbar />
-        </AppShell.Section>
-        <AppShell.Section>
-          <Center>
-            <NavbarFooter />
-          </Center>
-          {
-            state.user ? (
-              <NavLink
-                label={state.user ? state.user.name : "Anónimo"}
-                description={state.user ? state.user.email : "Inicia sesión"}
-                rightSection={<IconChevronRight />}
-                leftSection={
-                  <Avatar color="cyan" radius="xl">
-                    ARM
-                  </Avatar>
+                                <Button color="blue" fullWidth mt="md" radius="md">
+                                    Ver detalles del sorteo
+                                </Button>
+                            </Card>
+                        </Grid.Col>)
+                    )
                 }
-              />
-            ) : null
-          }
-        </AppShell.Section>
-      </AppShell.Navbar>
-      <AppShell.Main>
-        <Sorteos />
-      </AppShell.Main>
-      <AppShell.Aside p="xs">
-        <Title order={3} pb={30} pt={10}>Preview:</Title>
-        <PreviewSorteos />
-      </AppShell.Aside>
-    </AppShell>
-  );
+
+
+            </Grid>
+        </>
+    )
 }
+
+export default Home

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 const Navbar = () => {
     const router = useRouter()
     const itemNavbar = [
-        { "title": "Home", "description": "Resumen de sorteos", "link": "/dashboard/home", "icon": IconHome },
+        { "title": "Home", "description": "Resumen de sorteos", "link": "/dashboard", "icon": IconHome },
         { "title": "Sorteos", "description": "Ver, crear y publicar sorteos", "link": "/dashboard/sorteos", "icon": IconDice5 },
         { "title": "Premios", "description": "Ver, crear y publicar premios", "link": "/dashboard/premios", "icon": IconAward },
         { "title": "Usuarios", "description": "Listado de usuarios", "link": "/dashboard/usuarios", "icon": IconUser },

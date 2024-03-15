@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import { Anchor, Badge, Button, Card, Center, Grid, Group, Image, Text } from '@mantine/core'
 

@@ -4,16 +4,18 @@ import Navbar from '@/components/Navbar/Navbar';
 import NavbarFooter from '@/components/Navbar/NavbarFooter';
 import { AppShell, Avatar, Burger, Center, Group, NavLink, ScrollArea, Skeleton, Title } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
-import Sorteos from '@/app/dashboard/sorteos/page';
 import PreviewSorteos from '@/components/Previews/PreviewSorteos';
 import { AuthContext } from '@/contexts/AuthContext'
 
-
-export default function HomePage() {
-  const { state } = useContext(AuthContext)
-  const [opened, setOpened] = useState(false)
-  return (
-    <AppShell
+export default function DashboardLayout({
+    children, // will be a page or nested layout
+  }: {
+    children: React.ReactNode
+  }) {
+    const { state } = useContext(AuthContext)
+    const [opened, setOpened] = useState(false)
+    return (
+        <AppShell
       layout="alt"
       header={{ height: 60 }}
       navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !opened } }}
@@ -62,12 +64,12 @@ export default function HomePage() {
         </AppShell.Section>
       </AppShell.Navbar>
       <AppShell.Main>
-        <Sorteos />
+       {children}
       </AppShell.Main>
       <AppShell.Aside p="xs">
         <Title order={3} pb={30} pt={10}>Preview:</Title>
         <PreviewSorteos />
       </AppShell.Aside>
     </AppShell>
-  );
-}
+    )
+  }

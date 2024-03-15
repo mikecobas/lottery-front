@@ -1,37 +1,41 @@
-import { useState } from 'react';
-import axios, { AxiosResponse } from 'axios';
+import { AuthContext } from "@/contexts/AuthContext";
+import { useState, useContext } from "react";
+import { AuthResponse, Payload, User } from "@/interfaces/auth.interface"; // Asegúrate de que la ruta de importación sea correcta
 
-interface AuthState {
-  loading: boolean;
-  error: string | null;
-}
+const useAuth = () => {
+  const { dispatch } = useContext(AuthContext);
 
-interface LoginFunction {
-  (username: string, password: string): Promise<void>;
-}
-
-interface LoginResponse {
-  token: string;
-}
-
-export function useAuth(): [AuthState, LoginFunction] {
-  const [state, setState] = useState<AuthState>({ loading: false, error: null });
-
-  const login: LoginFunction = async (email: string, password: string) => {
-    setState({ loading: true, error: null });
-
-    try {
-      const response: AxiosResponse<LoginResponse> = await axios.post('https://privatedevs.com/api-contest/api/v1/auth/login', {
-        email,
-        password,
+  const login = async (
+    email: string,
+    password: string
+  ): Promise<AuthResponse> => {
+    const response = await fetch(
+      "https://privatedevs.com/api-contest/api/v1/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      }
+    );
+    if (response.ok) {
+      const data: AuthResponse = await response.json();
+      const { payload } = data;
+      dispatch({
+        type: "LOGIN",
+        payload: { user: payload.user, token: payload.token },
       });
-
-      localStorage.setItem('token', response.data.token);
-      setState({ loading: false, error: null });
-    } catch (error: any) {
-      setState({ loading: false, error: error.message });
+      return data;
+    } else {
+      throw new Error("Failed to authenticate");
     }
   };
 
-  return [state, login];
-}
+  return { login };
+};
+
+export default useAuth;

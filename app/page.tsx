@@ -1,17 +1,18 @@
 'use client';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Navbar from '@/components/Navbar/Navbar';
 import NavbarFooter from '@/components/Navbar/NavbarFooter';
 import { AppShell, Avatar, Burger, Center, Group, NavLink, ScrollArea, Skeleton, Title } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import Sorteos from './dashboard/sorteos/page';
 import PreviewSorteos from '@/components/Previews/PreviewSorteos';
-import Login from '@/components/auth/Login';
-import Register from '@/components/auth/Register';
+import Login from '@/components/Auth/Login';
+import Register from '@/components/Auth/Register';
+import { AuthContext } from '@/contexts/AuthContext'
 
 
 export default function HomePage() {
-
+  const { state } = useContext(AuthContext)
   const [opened, setOpened] = useState(false)
   return (
     <AppShell
@@ -46,16 +47,20 @@ export default function HomePage() {
           <Center>
             <NavbarFooter />
           </Center>
-          <NavLink
-            label="Asaed Reyes Medina"
-            description="asaedreyesmedina@gmail.com"
-            rightSection={<IconChevronRight />}
-            leftSection={
-              <Avatar color="cyan" radius="xl">
-                ARM
-              </Avatar>
-            }
-          />
+          {
+            state.user ? (
+              <NavLink
+                label={state.user ? state.user.name : "Anónimo"}
+                description={state.user ? state.user.email : "Inicia sesión"}
+                rightSection={<IconChevronRight />}
+                leftSection={
+                  <Avatar color="cyan" radius="xl">
+                    ARM
+                  </Avatar>
+                }
+              />
+            ) : null
+          }
         </AppShell.Section>
       </AppShell.Navbar>
       <AppShell.Main>

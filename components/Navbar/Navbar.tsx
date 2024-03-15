@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { NavLink } from '@mantine/core'
 import { IconHome, IconDice5, IconUser, IconAward, IconSettings } from '@tabler/icons-react'
 import classes from './Navbar.module.css'

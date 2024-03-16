@@ -1,7 +1,6 @@
 import { AuthContext } from "@/contexts/AuthContext";
 import { useState, useContext } from "react";
-import { AuthResponse, Payload, User } from "@/interfaces/auth.interface"; // Asegúrate de que la ruta de importación sea correcta
-
+import { AuthResponse, Payload, User } from "@/interfaces/auth.interface";
 const useAuth = () => {
   const { dispatch } = useContext(AuthContext);
 

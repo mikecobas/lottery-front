@@ -24,6 +24,7 @@ const useAuth = () => {
     );
     if (response.ok) {
       const data: AuthResponse = await response.json();
+      console.log(data);
       const { payload } = data;
       dispatch({
         type: "LOGIN",

@@ -1,12 +1,14 @@
 'use client'
 import React, { useContext, useState } from 'react'
-import { Grid, Select, TextInput, Text, Image, SimpleGrid, Group, rem, Center, Card, Button, Textarea } from '@mantine/core'
+import { Grid, Select, TextInput, Text, Image, SimpleGrid, Group, rem, Center, Card, Button } from '@mantine/core'
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath, DropzoneProps } from '@mantine/dropzone';
 import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react';
 import { SorteoContext } from '@/contexts/PreviewContext';
+import useContestPost from '@/hooks/useContestPost';
 
 const Sorteos = (props: Partial<DropzoneProps>) => {
-    const { dispatch } = useContext(SorteoContext)
+    const { state, dispatch } = useContext(SorteoContext)
+    const { postContest } = useContestPost()
     const [files, setFiles] = useState<FileWithPath[]>([]);
     const handleDrop = (files: FileWithPath[]) => {
         setFiles(files);
@@ -20,18 +22,18 @@ const Sorteos = (props: Partial<DropzoneProps>) => {
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch({ type: 'SET_NAME', payload: event.target.value });
     };
-    const handleStatusChange = (value: string | null) => {
-        if (value === 'Activo') {
-            dispatch({ type: 'SET_STATUS', payload: true });
-        } else {
-            dispatch({ type: 'SET_STATUS', payload: false });
-        }
+    const handleStatusChange = (value: any) => {
+
+        dispatch({ type: 'SET_STATUS', payload: value });
     };
     const handleRoundsChange = (event: any) => {
         dispatch({ type: 'SET_ROUNDS', payload: event.target.value });
     }
-    const handleDescriptionChange = (event: any) => {
-        dispatch({ type: 'SET_DESCRIPTION', payload: event.target.value });
+    const handleDateChange = (event: any) => {
+        dispatch({ type: 'SET_DATE', payload: event.target.value });
+    }
+    const handlePostContest = () => {
+        postContest({ name: state.name, contestStatus: state.contestStatus, rounds: state.rounds, contestDate: state.contestDate, })
     }
     const previews = files.map((file, index) => {
         const imageUrl = URL.createObjectURL(file);
@@ -40,21 +42,24 @@ const Sorteos = (props: Partial<DropzoneProps>) => {
     return (
         <>
             <Grid>
-                <Grid.Col span={{ base: 12, md: 6, lg: 5 }}>
+                <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
                     <TextInput label="Nombre del sorteo" withAsterisk placeholder='Devsorteos 1' onChange={handleNameChange} />
                 </Grid.Col>
-                <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+                <Grid.Col span={{ base: 6, md: 6, lg: 3 }}>
                     <Select
                         label="Estado del sorteo"
-                        placeholder="Activo | Finalizado"
-                        data={['Activo', 'Finalizado']}
+                        placeholder="OPEN | PENDING | FINISHED"
+                        data={["OPEN", " PENDING", "FINISHED"]}
                         onChange={handleStatusChange}
                     />
                 </Grid.Col>
-                <Grid.Col span={{ base: 12, md: 6, lg: 3 }}>
+                <Grid.Col span={{ base: 6, md: 6, lg: 2 }}>
                     <TextInput label="Numero de rondas" withAsterisk placeholder='1' type='number' onChange={handleRoundsChange} />
                 </Grid.Col>
-                <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
+                <Grid.Col span={{ base: 12, md: 6, lg: 3 }}>
+                    <TextInput label="Fecha del sorteo" withAsterisk type="date" onChange={handleDateChange} />
+                </Grid.Col>
+                <Grid.Col span={{ base: 12, md: 6, lg: 9 }}>
                     <Dropzone
                         onDrop={handleDrop}
                         maxSize={5 * 1024 ** 2}
@@ -93,18 +98,18 @@ const Sorteos = (props: Partial<DropzoneProps>) => {
                             </Group>
                         </Card>
                     </Dropzone>
-                    </Grid.Col>
-                    <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
+                </Grid.Col>
+                <Grid.Col span={{ base: 12, md: 6, lg: 3 }}>
                     <SimpleGrid cols={{ base: 1, sm: 1 }} mt={previews.length > 0 ? 'xl' : 0}>
                         <Center>
                             {previews}
                         </Center>
                     </SimpleGrid>
-                    </Grid.Col>
+                </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 6, lg: 12 }}>
                     <Group justify="end">
 
-                        <Button>Publicar sorteo</Button>
+                        <Button onClick={handlePostContest}>Publicar sorteo</Button>
 
 
                     </Group>

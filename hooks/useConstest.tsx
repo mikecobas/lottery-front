@@ -21,7 +21,6 @@ const useContest = () => {
                     },
                 }
             );
-
             if (response.ok) {
                 const data = await response.json();
                 dispatch({
@@ -35,6 +34,7 @@ const useContest = () => {
 
         getContests();
     }, [dispatch]);
+
 };
 
 export default useContest;

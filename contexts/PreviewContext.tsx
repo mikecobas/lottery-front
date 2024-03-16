@@ -2,15 +2,15 @@
 import React, { createContext, useReducer } from 'react';
 import { Skeleton } from '@mantine/core';
 
-// Definir el estado inicial
-const initialState = { name: "", status: true, rounds: 0, description: "", previewImg: <Skeleton height={160} /> };
 
-// Definir los tipos de acciones
+const initialState = { name: "", contestStatus: "", rounds: 0, contestDate: "", previewImg: <Skeleton height={160} /> };
+
+
 type Action =
     | { type: 'SET_NAME'; payload: string }
-    | { type: 'SET_STATUS'; payload: boolean }
+    | { type: 'SET_STATUS'; payload: string }
     | { type: 'SET_ROUNDS'; payload: number }
-    | { type: 'SET_DESCRIPTION'; payload: string }
+    | { type: 'SET_DATE'; payload: string }
     | { type: 'SET_PREVIEW_IMG'; payload: any };
 
 // Crear el reducer
@@ -19,11 +19,11 @@ const reducer = (state: typeof initialState, action: Action) => {
         case 'SET_NAME':
             return { ...state, name: action.payload };
         case 'SET_STATUS':
-            return { ...state, status: action.payload };
+            return { ...state, contestStatus: action.payload };
         case 'SET_ROUNDS':
             return { ...state, rounds: action.payload };
-        case 'SET_DESCRIPTION':
-            return { ...state, description: action.payload };
+        case 'SET_DATE':
+            return { ...state, contestDate: action.payload };
         case 'SET_PREVIEW_IMG':
             return { ...state, previewImg: action.payload };
         default:

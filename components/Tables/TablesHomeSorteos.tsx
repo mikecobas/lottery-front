@@ -10,7 +10,7 @@ export function TableHomeSorteos() {
         <Table.Tr key={index}>
             <Table.Td>{contest.name}</Table.Td>
             <Table.Td>{contest.rounds}</Table.Td>
-            <Table.Td>{contest.status}</Table.Td>
+            <Table.Td>{contest.contestStatus}</Table.Td>
             <Table.Td>{contest.createdBy.name}</Table.Td>
         </Table.Tr>
     ));

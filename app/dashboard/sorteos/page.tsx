@@ -1,3 +1,4 @@
+'use client'
 import React, { useContext, useState } from 'react'
 import { Grid, Select, TextInput, Text, Image, SimpleGrid, Group, rem, Center, Card, Button, Textarea } from '@mantine/core'
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath, DropzoneProps } from '@mantine/dropzone';

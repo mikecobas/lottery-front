@@ -1,3 +1,4 @@
+'use client'
 import React, { useReducer, createContext, Dispatch } from 'react';
 
 interface User {
@@ -58,10 +59,8 @@ const contestReducer = (state: State, action: Action): State => {
 };
 
 // Crear el proveedor del contexto
-const ContestProvider: React.FC = ({ children }: any) => {
+const ContestProvider = ({ children }: { children: React.ReactNode }) => {
     const [state, dispatch] = useReducer(contestReducer, initialState);
-    console.log(state);
-
     return (
         <ContestContext.Provider value={{ state, dispatch }}>
             {children}

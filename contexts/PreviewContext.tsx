@@ -41,7 +41,7 @@ const SorteoContext = createContext<{
 });
 
 // Crear el proveedor de contexto
-const SorteoProvider: React.FC = ({ children }: any | any[]) => {
+const SorteoProvider = ({ children }: { children: React.ReactNode }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     return (

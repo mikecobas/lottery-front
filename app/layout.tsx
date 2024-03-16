@@ -4,6 +4,7 @@ import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 import { theme } from '../theme';
 import { SorteoProvider } from '@/contexts/PreviewContext';
 import { AuthProvider } from '@/contexts/AuthContext';
+import { ContestProvider } from '@/contexts/ContestContext';
 
 export const metadata = {
   title: 'Sorteos app',
@@ -25,10 +26,12 @@ export default function RootLayout({ children }: { children: any }) {
       <body>
         <MantineProvider theme={theme}>
           <AuthProvider>
+            <ContestProvider>
 
-            <SorteoProvider>
-              {children}
-            </SorteoProvider>
+              <SorteoProvider>
+                {children}
+              </SorteoProvider>
+            </ContestProvider>
           </AuthProvider>
         </MantineProvider>
       </body>

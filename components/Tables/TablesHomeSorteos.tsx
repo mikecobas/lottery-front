@@ -5,9 +5,10 @@ import { useContext } from 'react';
 
 export function TableHomeSorteos() {
     useContest()
-    const {state} = useContext(ContestContext);
-    const rows = state.payload.map((contest) => (
-        <Table.Tr key={contest.name}>
+    const { state } = useContext(ContestContext);
+    const rows = state.payload.map((contest, index) => (
+        <Table.Tr key={index}>
+            <Table.Td>{contest.name}</Table.Td>
             <Table.Td>{contest.rounds}</Table.Td>
             <Table.Td>{contest.status}</Table.Td>
             <Table.Td>{contest.createdBy.name}</Table.Td>

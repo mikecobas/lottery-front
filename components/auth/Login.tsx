@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Card, Center, PasswordInput, TextInput, Title } from '@mantine/core';
-import useAuth from '@/hooks/useAuth'; // Importa el hook
+import useAuth from '@/hooks/useAuth';
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
+    const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { login } = useAuth();
@@ -11,6 +13,7 @@ const Login = () => {
         event.preventDefault();
         try {
             await login(email, password);
+            router.push('/dashboard');
         } catch (error) {
             console.error(error);
         }

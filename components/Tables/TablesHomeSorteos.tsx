@@ -12,22 +12,22 @@ export function TableHomeSorteos() {
             <Table.Td>{contest.rounds}</Table.Td>
             <Table.Td>{contest.status}</Table.Td>
             <Table.Td>{contest.createdBy.name}</Table.Td>
-            <Table.Td>{contest.contestDate}</Table.Td>
         </Table.Tr>
     ));
 
     return (
-        <Table striped highlightOnHover  >
-            <Table.Thead>
-                <Table.Tr>
-                    <Table.Th>Nombre del sorteo</Table.Th>
-                    <Table.Th>Rondas </Table.Th>
-                    <Table.Th>Estado</Table.Th>
-                    <Table.Th>Creado por</Table.Th>
-                    <Table.Th>Fecha del sorteo</Table.Th>
-                </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
+        <Table.ScrollContainer minWidth={500} h={350}>
+            <Table striped highlightOnHover  >
+                <Table.Thead>
+                    <Table.Tr>
+                        <Table.Th>Nombre del sorteo</Table.Th>
+                        <Table.Th>Rondas </Table.Th>
+                        <Table.Th>Estado</Table.Th>
+                        <Table.Th>Creado por</Table.Th>
+                    </Table.Tr>
+                </Table.Thead>
+                <Table.Tbody>{rows}</Table.Tbody>
+            </Table>
+        </Table.ScrollContainer>
     );
 }

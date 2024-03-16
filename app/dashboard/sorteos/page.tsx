@@ -54,15 +54,6 @@ const Sorteos = (props: Partial<DropzoneProps>) => {
                 <Grid.Col span={{ base: 12, md: 6, lg: 3 }}>
                     <TextInput label="Numero de rondas" withAsterisk placeholder='1' type='number' onChange={handleRoundsChange} />
                 </Grid.Col>
-
-                <Grid.Col span={{ base: 12, md: 6, lg: 12 }}>
-                    <Textarea
-                        withAsterisk
-                        label="Descripcion del sorteo"
-                        placeholder="Detalles del sorteo"
-                        onChange={handleDescriptionChange}
-                    />
-                </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
                     <Dropzone
                         onDrop={handleDrop}

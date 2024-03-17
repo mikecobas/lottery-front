@@ -3,12 +3,21 @@ import { ContestContext } from '@/contexts/ContestContext';
 import useContest from '@/hooks/useConstest';
 import { ActionIcon, Card, Group, Modal, Table, TextInput, Title } from '@mantine/core';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ModalCrudSorteos from '../Modals/ModalCrudSorteos';
+import { ModalDelete } from '../Modals/ModalDelete';
+import { Contest } from '@/interfaces/constest.inteface';
 
 export function TableHomeSorteos() {
-    useContest()
+    const { getContests } = useContest()
+    useEffect(() => {
+        getContests();
+    }, [])
+    
     const { state } = useContext(ContestContext);
+    const [openModalEdit, setOpenModalEdit] = useState(false)
+    const [openModalDelete, setOpenModalDelete] = useState(false)
+    const [data, setData] = useState<Contest>()
     const rows = state.payload.map((contest, index) => (
         <Table.Tr key={index}>
             <Table.Td>{contest.name}</Table.Td>
@@ -17,10 +26,10 @@ export function TableHomeSorteos() {
             <Table.Td>{contest.createdBy.name}</Table.Td>
             <Table.Td>
                 <Group>
-                    <ActionIcon variant="filled" aria-label="Settings">
+                    <ActionIcon variant="filled" aria-label="Settings" onClick={() => { setOpenModalEdit(true), setData(contest) }}>
                         <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
                     </ActionIcon>
-                    <ActionIcon variant="filled" color="red" aria-label="Settings">
+                    <ActionIcon variant="filled" color="red" aria-label="Settings" onClick={() => { setOpenModalDelete(true), setData(contest) }} >
                         <IconTrash style={{ width: '70%', height: '70%' }} stroke={1.5} />
                     </ActionIcon>
                 </Group>
@@ -51,7 +60,8 @@ export function TableHomeSorteos() {
                     </Table>
                 </Table.ScrollContainer>
             </Card>
-            <ModalCrudSorteos />
+            <ModalCrudSorteos abrirModal={openModalEdit} setModalEdit={setOpenModalEdit} title='Editar sorteo' data={data} />
+            <ModalDelete abrirModal={openModalDelete} setModalDelete={setOpenModalDelete} />
         </>
     );
 }

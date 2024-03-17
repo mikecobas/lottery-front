@@ -10,8 +10,9 @@ interface ModalCrudSorteosProps {
     abrirModal?: boolean;
     title?: string
     setModalEdit?: (value: boolean) => void
+    data: {}
 }
-export default function ModalCrudPremios({ abrirModal = true, title, setModalEdit = () => { } }: ModalCrudSorteosProps) {
+export default function ModalCrudPremios({ abrirModal = true, title, setModalEdit = () => { }, data = {} }: ModalCrudSorteosProps) {
     const [opened, { open, close }] = useDisclosure(true);
     const [post, setPost] = useState(initialState);
     const { postContest } = useContestPost();

@@ -5,20 +5,39 @@ import { Grid, Select, TextInput, Text, Image, SimpleGrid, Group, rem, Center, C
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath, DropzoneProps } from '@mantine/dropzone';
 import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react';
 import useContestPost from '@/hooks/useContestPost';
+import { Contest } from '@/interfaces/constest.inteface';
+import useContest from '@/hooks/useConstest';
+import { get } from 'http';
 const initialState = { name: "", contestStatus: "", rounds: 0, contestDate: "", previewImg: <Skeleton height={160} /> };
 interface ModalCrudSorteosProps {
     abrirModal?: boolean;
     title?: string
+    setModalEdit?: (value: boolean) => void
+    data?: Contest
 }
-export default function ModalCrudSorteos({ abrirModal = true, title }: ModalCrudSorteosProps) {
-    const [opened, { open, close }] = useDisclosure(true);
+export default function ModalCrudSorteos({ abrirModal = false, title, setModalEdit = () => { }, data = {
+    _id: "",
+    name: "",
+    status: false,
+    rounds: 0,
+    contestDate: "",
+    createdBy: { _id: "", name: "" },
+    image: "",
+    createdAt: "",
+    contestStatus: "",
+} }: ModalCrudSorteosProps) {
+    const { getContests } = useContest()
+    const [opened, { open, close }] = useDisclosure(false);
     const [post, setPost] = useState(initialState);
+    const [newValue, setNewValue] = useState(data)
     const { postContest } = useContestPost();
     const [files, setFiles] = useState<FileWithPath[]>([]);
     useEffect(() => {
         abrirModal ? open() : close()
     }, [abrirModal])
-
+    useEffect(() => {
+        setNewValue(data)
+    }, [data])
     const handleDrop = (files: FileWithPath[]) => {
         setFiles(files);
         const previews = files.map((file, index) => {
@@ -30,10 +49,12 @@ export default function ModalCrudSorteos({ abrirModal = true, title }: ModalCrud
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: string) => {
         setPost({ ...post, [field]: event.target.value });
+        setNewValue({ ...newValue, [field]: event.target.value });
     };
 
     const handleStatusChange = (value: any) => {
         setPost({ ...post, contestStatus: value });
+        setNewValue({ ...newValue, contestStatus: value });
     };
 
     const handlePostContest = () => {
@@ -49,15 +70,15 @@ export default function ModalCrudSorteos({ abrirModal = true, title }: ModalCrud
 
     return (
         <>
-            <Modal opened={opened} onClose={close} title="Sorteos" centered size="xl">
+            <Modal opened={opened} onClose={() => { close(), setModalEdit(false) }} title={title} centered size="xl">
                 <Grid>
-                    <InputCol label="Nombre del sorteo" placeholder='Devsorteos 1' onChange={(e: any) => handleInputChange(e, 'name')} />
-                    <StatusCol onChange={handleStatusChange} />
-                    <InputCol label="Numero de rondas" placeholder='1' type='number' onChange={(e: any) => handleInputChange(e, 'rounds')} />
-                    <InputCol label="Fecha del sorteo" type="datetime-local" onChange={(e: any) => handleInputChange(e, 'contestDate')} />
+                    <InputCol label="Nombre del sorteo" placeholder={data?.name} onChange={(e: any) => handleInputChange(e, 'name')} value={newValue?.name} />
+                    <StatusCol placeholder={data?.contestStatus} onChange={handleStatusChange} />
+                    <InputCol label="Numero de rondas" placeholder={data?.rounds} type='number' onChange={(e: any) => handleInputChange(e, 'rounds')} value={newValue?.rounds} />
+                    <InputCol label="Fecha del sorteo" type="datetime-local" onChange={(e: any) => handleInputChange(e, 'contestDate')} value={newValue?.contestDate} />
                     <DropzoneCol onDrop={handleDrop} />
                     <PreviewCol previews={previews} />
-                    <ButtonCol onClick={handlePostContest} />
+                    <ButtonCol onClick={() => { handlePostContest(), getContests(), setModalEdit(false) }} />
                 </Grid>
             </Modal>
         </>
@@ -65,17 +86,17 @@ export default function ModalCrudSorteos({ abrirModal = true, title }: ModalCrud
 }
 
 // cuerpo del formulario
-const InputCol = ({ label, placeholder, type, onChange }: any) => (
+const InputCol = ({ label, placeholder, type, onChange, value }: any) => (
     <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
-        <TextInput label={label} withAsterisk placeholder={placeholder} type={type} onChange={onChange} />
+        <TextInput label={label} withAsterisk placeholder={placeholder} type={type} onChange={onChange} value={value} />
     </Grid.Col>
 );
 
-const StatusCol = ({ onChange }: any) => (
+const StatusCol = ({ onChange, placeholder = "OPEN | PENDING | FINISHED" }: any) => (
     <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
         <Select
             label="Estado del sorteo"
-            placeholder="OPEN | PENDING | FINISHED"
+            placeholder={placeholder}
             data={["OPEN", " PENDING", "FINISHED"]}
             onChange={onChange}
         />

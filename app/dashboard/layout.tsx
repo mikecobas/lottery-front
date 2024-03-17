@@ -1,22 +1,30 @@
 'use client';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar/Navbar';
 import NavbarFooter from '@/components/Navbar/NavbarFooter';
 import { AppShell, Avatar, Burger, Center, Group, NavLink, ScrollArea, Skeleton, Title } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import { AuthContext } from '@/contexts/AuthContext'
+import { User } from '@/interfaces/auth.interface';
 
 export default function DashboardLayout({
-    children, // will be a page or nested layout
-  }: {
-    children: React.ReactNode
-  }) {
-    const { state } = useContext(AuthContext)
-    const [opened, setOpened] = useState(false)
-    const localStorageUser = JSON.parse(localStorage.getItem('user') || '{}');
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  const { state } = useContext(AuthContext)
+  const [opened, setOpened] = useState(false)
+  const [localStorageUser, setLocalStorageUser] = useState<User>();
 
-    return (
-        <AppShell
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      setLocalStorageUser(user);
+    }
+  }, []);
+
+  return (
+    <AppShell
       layout="alt"
       header={{ height: 60 }}
       navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !opened } }}
@@ -48,6 +56,7 @@ export default function DashboardLayout({
             <NavbarFooter />
           </Center>
           {
+
             localStorageUser ? (
               <NavLink
                 label={localStorageUser ? localStorageUser.name : "Anónimo"}
@@ -64,8 +73,8 @@ export default function DashboardLayout({
         </AppShell.Section>
       </AppShell.Navbar>
       <AppShell.Main>
-       {children}
+        {children}
       </AppShell.Main>
     </AppShell>
-    )
-  }
+  )
+}

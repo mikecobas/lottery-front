@@ -13,6 +13,8 @@ export default function DashboardLayout({
   }) {
     const { state } = useContext(AuthContext)
     const [opened, setOpened] = useState(false)
+    const localStorageUser = JSON.parse(localStorage.getItem('user') || '{}');
+
     return (
         <AppShell
       layout="alt"
@@ -46,10 +48,10 @@ export default function DashboardLayout({
             <NavbarFooter />
           </Center>
           {
-            state.user ? (
+            localStorageUser ? (
               <NavLink
-                label={state.user ? state.user.name : "Anónimo"}
-                description={state.user ? state.user.email : "Inicia sesión"}
+                label={localStorageUser ? localStorageUser.name : "Anónimo"}
+                description={localStorageUser ? localStorageUser.email : "Inicia sesión"}
                 rightSection={<IconChevronRight />}
                 leftSection={
                   <Avatar color="cyan" radius="xl">

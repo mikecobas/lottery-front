@@ -20,7 +20,7 @@ type Action =
   | { type: 'LOGOUT' };
 
 const initialState: State = {
-  user: null,
+  user: typeof window !== 'undefined' && window.localStorage && localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null,
   token: typeof window !== 'undefined' && window.localStorage ? localStorage.getItem('token') : null,
 };
 
@@ -45,7 +45,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   console.log(state);
   useEffect(() => {
     localStorage.setItem('token', state.token || '');
-  }, [state.token]);
+    localStorage.setItem('user', JSON.stringify(state.user) || '');
+  }, [state.token, state.user]);
 
   return (
     <AuthContext.Provider value={{ state, dispatch }}>

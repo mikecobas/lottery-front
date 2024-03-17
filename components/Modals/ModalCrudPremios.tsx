@@ -1,7 +1,7 @@
 'use client'
 import { useDisclosure } from '@mantine/hooks';
 import React, { useEffect, useState } from 'react'
-import { Grid, Select, TextInput, Text, Image, SimpleGrid, Group, rem, Center, Card, Button, Skeleton, Modal } from '@mantine/core'
+import { Grid, Select, TextInput, Text, Image, SimpleGrid, Group, rem, Center, Card, Button, Skeleton, Modal, Textarea } from '@mantine/core'
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from '@mantine/dropzone';
 import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react';
 import useContestPost from '@/hooks/useContestPost';
@@ -53,10 +53,8 @@ export default function ModalCrudPremios({ abrirModal = true, title, setModalEdi
         <>
             <Modal opened={opened} onClose={() => { close(), setModalEdit(false) }} title="Sorteos" centered size="xl">
                 <Grid>
-                    <InputCol label="Nombre del sorteo" placeholder='Devsorteos 1' onChange={(e: any) => handleInputChange(e, 'name')} />
-                    <StatusCol onChange={handleStatusChange} />
-                    <InputCol label="Numero de rondas" placeholder='1' type='number' onChange={(e: any) => handleInputChange(e, 'rounds')} />
-                    <InputCol label="Fecha del sorteo" type="datetime-local" onChange={(e: any) => handleInputChange(e, 'contestDate')} />
+                    <InputCol label="Nombre del premio" placeholder='Teclado corne' onChange={(e: any) => handleInputChange(e, 'name')} />
+                    <TextCol label="Descripción" placeholder='Descripcion del premio' onChange={(e: any) => handleInputChange(e, 'description')} />
                     <DropzoneCol onDrop={handleDrop} />
                     <PreviewCol previews={previews} />
                     <ButtonCol onClick={handlePostContest} />
@@ -68,24 +66,18 @@ export default function ModalCrudPremios({ abrirModal = true, title, setModalEdi
 
 // cuerpo del formulario
 const InputCol = ({ label, placeholder, type, onChange }: any) => (
-    <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
+    <Grid.Col span={{ base: 12, md: 6, lg: 12 }}>
         <TextInput label={label} withAsterisk placeholder={placeholder} type={type} onChange={onChange} />
     </Grid.Col>
 );
-
-const StatusCol = ({ onChange }: any) => (
-    <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
-        <Select
-            label="Estado del sorteo"
-            placeholder="OPEN | PENDING | FINISHED"
-            data={["OPEN", " PENDING", "FINISHED"]}
-            onChange={onChange}
-        />
+const TextCol = ({ label, placeholder, onChange }: any) => (
+    <Grid.Col span={{ base: 12, md: 6, lg: 12 }}>
+        <Textarea label={label} withAsterisk placeholder={placeholder} onChange={onChange} />
     </Grid.Col>
 );
 
 const DropzoneCol = ({ onDrop, ...props }: any) => (
-    <Grid.Col span={{ base: 12, md: 6, lg: 8 }}>
+    <Grid.Col span={{ base: 12, md: 6, lg: 12 }}>
         <Dropzone onDrop={onDrop} maxSize={5 * 1024 ** 2} accept={IMAGE_MIME_TYPE} {...props}>
             <Card>
                 <Group justify="center" gap="xl" mih={220} style={{ pointerEvents: 'none' }}>
@@ -109,7 +101,7 @@ const DropzoneCol = ({ onDrop, ...props }: any) => (
 );
 
 const PreviewCol = ({ previews }: any) => (
-    <Grid.Col span={{ base: 12, md: 6, lg: 4 }} pb={30}>
+    <Grid.Col span={{ base: 12, md: 6, lg: 12 }} pb={30}>
         <SimpleGrid cols={{ base: 1, sm: 1 }} mt={previews.length > 0 ? 'xl' : 0}>
             <Center>{previews}</Center>
         </SimpleGrid>

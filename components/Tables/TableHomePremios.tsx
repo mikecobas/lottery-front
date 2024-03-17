@@ -4,15 +4,21 @@ import useContest from '@/hooks/useConstest';
 import usePrizes from '@/hooks/usePrizes';
 import { ActionIcon, Card, Group, Modal, Table, TextInput, Title } from '@mantine/core';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ModalCrudPremios from '../Modals/ModalCrudPremios';
 import { ModalDelete } from '../Modals/ModalDelete';
+import { Contest } from '@/interfaces/constest.inteface';
+import { Payload } from '@/interfaces/prizes.interfaces';
 
 export function TableHomePremios() {
-    usePrizes()
+    const { getPrizes } = usePrizes()
+    useEffect(() => {
+        getPrizes();
+    }, [])
     const { state } = useContext(PrizesContext);
     const [openModalEdit, setOpenModalEdit] = useState(false)
     const [openModalDelete, setOpenModalDelete] = useState(false)
+    const [data, setData] = useState<any>()
     const rows = state.payload.map((prizes, index) => (
         <Table.Tr key={index}>
             <Table.Td>{prizes.name}</Table.Td>
@@ -21,7 +27,7 @@ export function TableHomePremios() {
             <Table.Td>{prizes.status}</Table.Td>
             <Table.Td>
                 <Group>
-                    <ActionIcon variant="filled" aria-label="Settings" onClick={() => setOpenModalEdit(true)}>
+                    <ActionIcon variant="filled" aria-label="Settings" onClick={() => {setOpenModalEdit(true),setData(prizes)}}>
                         <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
                     </ActionIcon>
                     <ActionIcon variant="filled" color="red" aria-label="Settings" onClick={() => setOpenModalDelete(true)}>
@@ -55,8 +61,8 @@ export function TableHomePremios() {
                     </Table>
                 </Table.ScrollContainer>
             </Card>
-            <ModalCrudPremios abrirModal={openModalEdit} setModalEdit={setOpenModalEdit} />
-            <ModalDelete abrirModal={openModalDelete} setModalDelete={setOpenModalDelete} />
+            <ModalCrudPremios abrirModal={openModalEdit} setModalEdit={setOpenModalEdit} data={data} />
+            <ModalDelete abrirModal={openModalDelete} setModalDelete={setOpenModalDelete} data={data} />
         </>
     );
 }

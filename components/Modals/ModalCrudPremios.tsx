@@ -9,15 +9,16 @@ const initialState = { name: "", contestStatus: "", rounds: 0, contestDate: "", 
 interface ModalCrudSorteosProps {
     abrirModal?: boolean;
     title?: string
+    setModalEdit?: (value: boolean) => void
 }
-export default function MoadalCrudSorteos({ abrirModal = true, title }: ModalCrudSorteosProps) {
+export default function ModalCrudPremios({ abrirModal = true, title, setModalEdit = () => { } }: ModalCrudSorteosProps) {
     const [opened, { open, close }] = useDisclosure(true);
     const [post, setPost] = useState(initialState);
     const { postContest } = useContestPost();
     const [files, setFiles] = useState<FileWithPath[]>([]);
     useEffect(() => {
         abrirModal ? open() : close()
-    }, [abrirModal])
+    }, [abrirModal, close])
 
     const handleDrop = (files: FileWithPath[]) => {
         setFiles(files);
@@ -49,7 +50,7 @@ export default function MoadalCrudSorteos({ abrirModal = true, title }: ModalCru
 
     return (
         <>
-            <Modal opened={opened} onClose={close} title="Sorteos" centered size="xl">
+            <Modal opened={opened} onClose={() => { close(), setModalEdit(false) }} title="Sorteos" centered size="xl">
                 <Grid>
                     <InputCol label="Nombre del sorteo" placeholder='Devsorteos 1' onChange={(e: any) => handleInputChange(e, 'name')} />
                     <StatusCol onChange={handleStatusChange} />

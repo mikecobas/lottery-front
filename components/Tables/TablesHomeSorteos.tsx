@@ -4,7 +4,7 @@ import useContest from '@/hooks/useConstest';
 import { ActionIcon, Card, Group, Modal, Table, TextInput, Title } from '@mantine/core';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import { useContext } from 'react';
-import MoadalCrudSorteos from '../Modals/ModalCrudSorteos';
+import ModalCrudSorteos from '../Modals/ModalCrudSorteos';
 
 export function TableHomeSorteos() {
     useContest()
@@ -51,7 +51,7 @@ export function TableHomeSorteos() {
                     </Table>
                 </Table.ScrollContainer>
             </Card>
-            <MoadalCrudSorteos />
+            <ModalCrudSorteos />
         </>
     );
 }

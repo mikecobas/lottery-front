@@ -10,7 +10,7 @@ interface ModalCrudSorteosProps {
     abrirModal?: boolean;
     title?: string
 }
-export default function MoadalCrudSorteos({ abrirModal = true, title }: ModalCrudSorteosProps) {
+export default function ModalCrudSorteos({ abrirModal = true, title }: ModalCrudSorteosProps) {
     const [opened, { open, close }] = useDisclosure(true);
     const [post, setPost] = useState(initialState);
     const { postContest } = useContestPost();

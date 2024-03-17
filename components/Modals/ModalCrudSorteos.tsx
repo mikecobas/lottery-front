@@ -13,7 +13,7 @@ interface ModalCrudSorteosProps {
     abrirModal?: boolean;
     title?: string
     setModalEdit?: (value: boolean) => void
-    data?: Contest
+    data?: Contest 
 }
 export default function ModalCrudSorteos({ abrirModal = false, title, setModalEdit = () => { }, data = {
     _id: "",
@@ -35,9 +35,6 @@ export default function ModalCrudSorteos({ abrirModal = false, title, setModalEd
     useEffect(() => {
         abrirModal ? open() : close()
     }, [abrirModal])
-    useEffect(() => {
-        setNewValue(data)
-    }, [data])
     const handleDrop = (files: FileWithPath[]) => {
         setFiles(files);
         const previews = files.map((file, index) => {

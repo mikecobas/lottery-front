@@ -32,6 +32,7 @@ export default function useApi(): ApiHook {
         options.body = JSON.stringify(data);
       }
       const response = await fetch(url, options);
+      console.log(response);
       setLoading(false);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

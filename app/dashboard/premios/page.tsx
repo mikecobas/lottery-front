@@ -3,10 +3,8 @@ import React, { useContext, useState } from 'react'
 import { Grid, Select, TextInput, Text, Image, SimpleGrid, Group, rem, Center, Card, Button, Textarea } from '@mantine/core'
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath, DropzoneProps } from '@mantine/dropzone';
 import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react';
-import { SorteoContext } from '@/contexts/PreviewContext';
 
 const Sorteos = (props: Partial<DropzoneProps>) => {
-    const { dispatch } = useContext(SorteoContext)
     const [files, setFiles] = useState<FileWithPath[]>([]);
     const handleDrop = (files: FileWithPath[]) => {
         setFiles(files);
@@ -14,24 +12,18 @@ const Sorteos = (props: Partial<DropzoneProps>) => {
             const imageUrl = URL.createObjectURL(file);
             return <Image key={index} src={imageUrl} onLoad={() => URL.revokeObjectURL(imageUrl)} />;
         });
-        dispatch({ type: 'SET_PREVIEW_IMG', payload: previews });
     };
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        dispatch({ type: 'SET_NAME', payload: event.target.value });
     };
     const handleStatusChange = (value: string | null) => {
         if (value === 'Activo') {
-            dispatch({ type: 'SET_STATUS', payload: true });
         } else {
-            dispatch({ type: 'SET_STATUS', payload: false });
         }
     };
     const handleRoundsChange = (event: any) => {
-        dispatch({ type: 'SET_ROUNDS', payload: event.target.value });
     }
     const handleDescriptionChange = (event: any) => {
-        dispatch({ type: 'SET_DESCRIPTION', payload: event.target.value });
     }
     const previews = files.map((file, index) => {
         const imageUrl = URL.createObjectURL(file);
@@ -102,14 +94,14 @@ const Sorteos = (props: Partial<DropzoneProps>) => {
                             </Group>
                         </Card>
                     </Dropzone>
-                    </Grid.Col>
-                    <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
+                </Grid.Col>
+                <Grid.Col span={{ base: 12, md: 6, lg: 6 }}>
                     <SimpleGrid cols={{ base: 1, sm: 1 }} mt={previews.length > 0 ? 'xl' : 0}>
                         <Center>
                             {previews}
                         </Center>
                     </SimpleGrid>
-                    </Grid.Col>
+                </Grid.Col>
                 <Grid.Col span={{ base: 12, md: 6, lg: 12 }}>
                     <Group justify="end">
 

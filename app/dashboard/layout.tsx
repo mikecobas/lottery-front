@@ -4,7 +4,6 @@ import Navbar from '@/components/Navbar/Navbar';
 import NavbarFooter from '@/components/Navbar/NavbarFooter';
 import { AppShell, Avatar, Burger, Center, Group, NavLink, ScrollArea, Skeleton, Title } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
-import PreviewSorteos from '@/components/Previews/PreviewSorteos';
 import { AuthContext } from '@/contexts/AuthContext'
 
 export default function DashboardLayout({
@@ -19,7 +18,6 @@ export default function DashboardLayout({
       layout="alt"
       header={{ height: 60 }}
       navbar={{ width: 300, breakpoint: "sm", collapsed: { mobile: !opened } }}
-      aside={{ width: 300, breakpoint: 'md', collapsed: { desktop: false, mobile: true } }}
 
       padding="md"
     >
@@ -66,10 +64,6 @@ export default function DashboardLayout({
       <AppShell.Main>
        {children}
       </AppShell.Main>
-      <AppShell.Aside p="xs">
-        <Title order={3} pb={30} pt={10}>Preview:</Title>
-        <PreviewSorteos />
-      </AppShell.Aside>
     </AppShell>
     )
   }

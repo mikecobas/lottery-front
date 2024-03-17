@@ -8,9 +8,9 @@ const Home = () => {
         <>
             <Grid>
                 <Grid.Col span={{ base: 12, md: 6, lg: 12 }}>
-                    <Card>
-                        <TableHomeSorteos />
-                    </Card>
+
+                    <TableHomeSorteos />
+
                 </Grid.Col>
             </Grid>
         </>

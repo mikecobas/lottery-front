@@ -2,7 +2,6 @@ import '@mantine/core/styles.css';
 import React from 'react';
 import { MantineProvider, ColorSchemeScript } from '@mantine/core';
 import { theme } from '../theme';
-import { SorteoProvider } from '@/contexts/PreviewContext';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ContestProvider } from '@/contexts/ContestContext';
 
@@ -26,12 +25,9 @@ export default function RootLayout({ children }: { children: any }) {
       <body>
         <MantineProvider theme={theme}>
           <AuthProvider>
-            <ContestProvider>
-
-              <SorteoProvider>
+              <ContestProvider>
                 {children}
-              </SorteoProvider>
-            </ContestProvider>
+              </ContestProvider>
           </AuthProvider>
         </MantineProvider>
       </body>

@@ -1,13 +1,13 @@
 'use client'
 import { useDisclosure } from '@mantine/hooks';
-import React, { useEffect, useState } from 'react'
+import React, {  useEffect, useState } from 'react'
 import { Grid, TextInput, Image, SimpleGrid, Group, rem, Center, Card, Button, Skeleton, Modal, Textarea, Text } from '@mantine/core'
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from '@mantine/dropzone';
 import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react';
 import useContestPost from '@/hooks/useContestPost';
-import useContest from '@/hooks/useConstest';
 import { Payload } from '@/interfaces/prizes.interfaces';
 import useApi from '@/api/useApi';
+import usePrizes from '@/hooks/usePrizes';
 
 const initialState = { name: "", description: "", previewImg: <Skeleton height={160} /> };
 
@@ -22,7 +22,7 @@ export default function ModalCrudSorteos({ abrirModal = false, title, setModalEd
     name: "",
     description: ""
 } }: ModalCrudSorteosProps) {
-    const { getContests } = useContest()
+    const { getPrizes } = usePrizes()
     const [opened, { open, close }] = useDisclosure(false);
     const [post, setPost] = useState(initialState);
     const [newValue, setNewValue] = useState(data)
@@ -46,9 +46,8 @@ export default function ModalCrudSorteos({ abrirModal = false, title, setModalEd
         setNewValue({ ...newValue, [field]: event.target.value });
     };
 
-    const handlePostContest = async () => {
-        // Llama al método post con el endpoint y los datos
-        await postApi('https://privatedevs.com/api-contest/api/v1/prizes/create', { name: post.name, description: post.description, contestId: "65f49180f37c5175e73b6d45", orderToLot: 3 });
+    const handlePostPrizes = async () => {
+        await postApi('https://privatedevs.com/api-contest/api/v1/prizes/create', { name: post.name, description: post.description, contestId: "65f49180f37c5175e73b6d45", orderToLot: 3 })
         setPost(initialState);
         close();
     };
@@ -66,7 +65,7 @@ export default function ModalCrudSorteos({ abrirModal = false, title, setModalEd
                     <TextCol label="Descripción" onChange={(e: any) => handleInputChange(e, 'description')} value={newValue?.description} />
                     <DropzoneCol onDrop={handleDrop} />
                     <PreviewCol previews={previews} />
-                    <ButtonCol onClick={() => { handlePostContest(), getContests(), setModalEdit(false) }} />
+                    <ButtonCol onClick={() => { handlePostPrizes(), getPrizes(), setModalEdit(false) }} />
                 </Grid>
             </Modal>
         </>

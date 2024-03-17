@@ -7,7 +7,6 @@ import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react';
 import useContestPost from '@/hooks/useContestPost';
 import { Contest } from '@/interfaces/constest.inteface';
 import useContest from '@/hooks/useConstest';
-import { get } from 'http';
 const initialState = { name: "", contestStatus: "", rounds: 0, contestDate: "", previewImg: <Skeleton height={160} /> };
 interface ModalCrudSorteosProps {
     abrirModal?: boolean;
@@ -27,10 +26,10 @@ export default function ModalCrudSorteos({ abrirModal = false, title, setModalEd
     contestStatus: "",
 } }: ModalCrudSorteosProps) {
     const { getContests } = useContest()
+    const { postContest } = useContestPost();
     const [opened, { open, close }] = useDisclosure(false);
     const [post, setPost] = useState(initialState);
     const [newValue, setNewValue] = useState(data)
-    const { postContest } = useContestPost();
     const [files, setFiles] = useState<FileWithPath[]>([]);
     useEffect(() => {
         abrirModal ? open() : close()

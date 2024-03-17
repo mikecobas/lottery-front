@@ -37,7 +37,7 @@ export function TableHomeSorteos() {
                     <TextInput placeholder='Buscar sorteo' />
                 </Group>
                 <Table.ScrollContainer minWidth={500} h={350}>
-                    <Table striped horizontalSpacing="xl"  >
+                    <Table striped   >
                         <Table.Thead>
                             <Table.Tr>
                                 <Table.Th>Nombre del sorteo</Table.Th>

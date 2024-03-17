@@ -1,18 +1,20 @@
 import { ContestContext } from '@/contexts/ContestContext';
+import { PrizesContext } from '@/contexts/PrizesContext';
 import useContest from '@/hooks/useConstest';
+import usePrizes from '@/hooks/usePrizes';
 import { ActionIcon, Card, Group, Table, TextInput, Title } from '@mantine/core';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import { useContext } from 'react';
 
 export function TableHomePremios() {
-    useContest()
-    const { state } = useContext(ContestContext);
-    const rows = state.payload.map((contest, index) => (
+    usePrizes()
+    const { state } = useContext(PrizesContext);
+    const rows = state.payload.map((prizes, index) => (
         <Table.Tr key={index}>
-            <Table.Td>{contest.name}</Table.Td>
-            <Table.Td>{contest.rounds}</Table.Td>
-            <Table.Td>{contest.contestStatus}</Table.Td>
-            <Table.Td>{contest.createdBy.name}</Table.Td>
+            <Table.Td>{prizes.name}</Table.Td>
+            <Table.Td>{prizes.description}</Table.Td>
+            <Table.Td>{prizes.contestId.name}</Table.Td>
+            <Table.Td>{prizes.status}</Table.Td>
             <Table.Td>
                 <Group>
                     <ActionIcon variant="filled" aria-label="Settings">
@@ -29,17 +31,17 @@ export function TableHomePremios() {
     return (
         <Card>
             <Group justify="space-between" pb={24}>
-                <Title order={1}>Sorteos</Title>
+                <Title order={1}>Premios</Title>
                 <TextInput placeholder='Buscar sorteo' />
             </Group>
             <Table.ScrollContainer minWidth={500} h={350}>
-                <Table striped  horizontalSpacing="xl"  >
+                <Table striped   >
                     <Table.Thead>
                         <Table.Tr>
-                            <Table.Th>Nombre del sorteo</Table.Th>
-                            <Table.Th>Rondas </Table.Th>
-                            <Table.Th>Estado</Table.Th>
-                            <Table.Th>Creado por</Table.Th>
+                            <Table.Th>Nombre del premio</Table.Th>
+                            <Table.Th>Descripción </Table.Th>
+                            <Table.Th>Sorteo</Table.Th>
+                            <Table.Th></Table.Th>
                             <Table.Th>Acciones</Table.Th>
                         </Table.Tr>
                     </Table.Thead>

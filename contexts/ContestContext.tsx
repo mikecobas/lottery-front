@@ -15,6 +15,7 @@ interface Contest {
     createdBy: User;
     image: string;
     createdAt: string;
+    contestStatus: string;
 }
 
 interface State {

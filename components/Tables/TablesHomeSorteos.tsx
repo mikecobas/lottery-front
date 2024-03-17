@@ -1,33 +1,67 @@
+'use client'
 import { ContestContext } from '@/contexts/ContestContext';
 import useContest from '@/hooks/useConstest';
-import { Table } from '@mantine/core';
-import { useContext } from 'react';
+import { ActionIcon, Card, Group, Modal, Table, TextInput, Title } from '@mantine/core';
+import { IconEdit, IconTrash } from '@tabler/icons-react';
+import { useContext, useEffect, useState } from 'react';
+import ModalCrudSorteos from '../Modals/ModalCrudSorteos';
+import { ModalDelete } from '../Modals/ModalDelete';
+import { Contest } from '@/interfaces/constest.inteface';
 
 export function TableHomeSorteos() {
-    useContest()
+    const { getContests } = useContest()
+    useEffect(() => {
+        getContests();
+    }, [])
+    
     const { state } = useContext(ContestContext);
+    const [openModalEdit, setOpenModalEdit] = useState(false)
+    const [openModalDelete, setOpenModalDelete] = useState(false)
+    const [data, setData] = useState<Contest>()
     const rows = state.payload.map((contest, index) => (
         <Table.Tr key={index}>
             <Table.Td>{contest.name}</Table.Td>
             <Table.Td>{contest.rounds}</Table.Td>
-            <Table.Td>{contest.status}</Table.Td>
+            <Table.Td>{contest.contestStatus}</Table.Td>
             <Table.Td>{contest.createdBy.name}</Table.Td>
-            <Table.Td>{contest.contestDate}</Table.Td>
+            <Table.Td>
+                <Group>
+                    <ActionIcon variant="filled" aria-label="Settings" onClick={() => { setOpenModalEdit(true), setData(contest) }}>
+                        <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
+                    </ActionIcon>
+                    <ActionIcon variant="filled" color="red" aria-label="Settings" onClick={() => { setOpenModalDelete(true), setData(contest) }} >
+                        <IconTrash style={{ width: '70%', height: '70%' }} stroke={1.5} />
+                    </ActionIcon>
+                </Group>
+            </Table.Td>
         </Table.Tr>
     ));
 
     return (
-        <Table striped highlightOnHover  >
-            <Table.Thead>
-                <Table.Tr>
-                    <Table.Th>Nombre del sorteo</Table.Th>
-                    <Table.Th>Rondas </Table.Th>
-                    <Table.Th>Estado</Table.Th>
-                    <Table.Th>Creado por</Table.Th>
-                    <Table.Th>Fecha del sorteo</Table.Th>
-                </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
+        <>
+
+            <Card>
+                <Group justify="space-between" pb={24}>
+                    <Title order={1}>Sorteos</Title>
+                    <TextInput placeholder='Buscar sorteo' />
+                </Group>
+                <Table.ScrollContainer minWidth={500} h={350}>
+                    <Table striped   >
+                        <Table.Thead>
+                            <Table.Tr>
+                                <Table.Th>Nombre del sorteo</Table.Th>
+                                <Table.Th>Rondas </Table.Th>
+                                <Table.Th>Estado</Table.Th>
+                                <Table.Th>Creado por</Table.Th>
+                                <Table.Th>Acciones</Table.Th>
+                            </Table.Tr>
+                        </Table.Thead>
+                        <Table.Tbody>{rows}</Table.Tbody>
+                    </Table>
+                </Table.ScrollContainer>
+            </Card>
+            <ModalCrudSorteos abrirModal={openModalEdit} setModalEdit={setOpenModalEdit} title='Editar sorteo' data={data} />
+            <ModalDelete abrirModal={openModalDelete} setModalDelete={setOpenModalDelete} title='sorteo: ' data={data} />
+        </>
     );
 }

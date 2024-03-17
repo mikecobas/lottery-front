@@ -22,6 +22,7 @@ export interface Contest {
   createdBy: CreatedBy;
   image: string;
   createdAt: string;
+  contestStatus: string;
 }
 export interface CreatedBy {
   _id: string;

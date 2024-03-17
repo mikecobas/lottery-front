@@ -44,7 +44,7 @@
   text-align: center;
   background: transparent;
   width: 400px;
-  margin: 100px auto;
+  margin: 0 auto 100px;
   border: 2px solid rgba(56,160,204,0.75);
   border-radius: 20px;
   background: #000;

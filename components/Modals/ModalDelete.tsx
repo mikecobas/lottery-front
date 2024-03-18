@@ -11,9 +11,10 @@ interface ModalDeleteProps {
     title?: string;
     setModalDelete: (value: boolean) => void;
     data: Contest | undefined
+    action?: "contest" | "prize";
 }
 
-export function ModalDelete({ abrirModal = true, title, setModalDelete = () => { }, data }: ModalDeleteProps) {
+export function ModalDelete({ abrirModal = true, title, setModalDelete = () => { }, data, action }: ModalDeleteProps) {
     const [opened, { open, close }] = useDisclosure(false);
     const [newData, setNewData] = useState<Contest | Payload>({} as Contest | Payload)
     const { del } = useApi();
@@ -25,15 +26,20 @@ export function ModalDelete({ abrirModal = true, title, setModalDelete = () => {
             setNewData(data);
         }
     }, [])
-
     const handleDelete = async () => {
-        close();
         setModalDelete(false);
+        let endpoint = '';
+        if (action === 'contest') {
+            endpoint = `https://privatedevs.com/api-contest/api/v1/contests/${data?._id}`;
+        } else if (action === 'prize') {
+            endpoint = `https://privatedevs.com/api-contest/api/v1/prizes/${data?._id}`;
+        }
         try {
-            await del(`https://privatedevs.com/api-contest/api/v1/contests/${data?._id}`);
+            await del(endpoint);
         } catch (error) {
             console.error(error);
         }
+        close();
     }
 
     return (

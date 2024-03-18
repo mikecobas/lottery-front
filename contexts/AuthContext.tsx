@@ -47,7 +47,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     localStorage.setItem('user', JSON.stringify(state.user));
     localStorage.setItem('token', state.token || '');
-  }, [state.token]);
+    localStorage.setItem('user', JSON.stringify(state.user) || '');
+  }, [state.token, state.user]);
 
   return (
     <AuthContext.Provider value={{ state, dispatch }}>

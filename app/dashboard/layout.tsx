@@ -82,7 +82,7 @@ export default function DashboardLayout({
                 description={state.user ? state.user.email : "Inicia sesión"}
                 rightSection={<IconChevronRight />}
                 leftSection={
-                  <Avatar src="./assets/normal-face.png" radius="xl" />
+                  <Avatar src="/assets/normal-face.png" radius="xl" />
                 }
               />
             ) : null}

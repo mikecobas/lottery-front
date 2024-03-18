@@ -2,7 +2,7 @@ export interface ContestData {
     status:  number;
     error:   boolean;
     msg:     string;
-    payload: Payload[];
+    payload: Payload;
 }
 
 export interface Payload {

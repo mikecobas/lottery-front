@@ -1,3 +1,4 @@
+"use client";
 import { useState } from "react";
 
 const useImageUploader = () => {
@@ -5,23 +6,26 @@ const useImageUploader = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const uploadImage = async (url: any, imageFile: any, method = "POST") => {
-    console.log(imageFile);
+  const uploadImage = async (url: any, imageFile: any) => {
     setLoading(true);
     setError(null);
     setSuccess(false);
 
     try {
       const formData = new FormData();
-      formData.append("image", imageFile);
+      formData.append("file", imageFile);
 
       const response = await fetch(url, {
-        method: method,
+        method: "PUT",
         body: formData,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
-      console.log(response);
+      const data = await response.json();
+      console.log(data);
       if (!response.ok) {
-        throw new Error("Error al enviar la imagen");
+        throw new Error("Error");
       }
 
       setSuccess(true);

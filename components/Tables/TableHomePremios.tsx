@@ -57,7 +57,7 @@ export function TableHomePremios() {
                             <Menu.Dropdown>
                                 <Menu.Label>Edición</Menu.Label>
                                 <Menu.Item
-                                    onClick={() => { setOpenModalEdit(true), setData(prizes), getPrizes() }}
+                                    onClick={() => { setOpenModalEdit(true), setData(prizes), getPrizes(), setaction("edit") }}
                                     leftSection={<IconSettings style={{ width: rem(14), height: rem(14) }} />}>
                                 Editar
                                 </Menu.Item>

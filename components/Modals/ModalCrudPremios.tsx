@@ -37,6 +37,8 @@ export default function ModalCrudPremios({ action, abrirModal = false, title, se
     }, []);
     const [nombresSorteos, setNombresSorteos] = useState<any[]>([]);
     const [sorteos, setSorteos] = useState<any[]>([]);
+    const [imageFile, setImageFile] = useState<File | null>(null);
+
     const { getPrizes } = usePrizes()
     const { getContests } = useContest()
     const { state } = useContext(ContestContext)
@@ -60,7 +62,6 @@ export default function ModalCrudPremios({ action, abrirModal = false, title, se
                 tempNombresSorteos.push({ label: sorteo.name, value: sorteo._id })
             }
         })
-        console.log(tempNombresSorteos);
         // Actualizar estados
         setNombresSorteos(tempNombresSorteos);
         setSorteos(tempSorteos);
@@ -71,24 +72,21 @@ export default function ModalCrudPremios({ action, abrirModal = false, title, se
     }, [data])
 
 
-    const handleDrop = (files: FileWithPath[]) => {
-        setFiles(files);
-        const previews = files.map((file, index) => {
-            const imageUrl = URL.createObjectURL(file);
-            return <Image key={index} src={imageUrl} onLoad={() => URL.revokeObjectURL(imageUrl)} />;
-        });
-    };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: string) => {
         setPost({ ...post, [field]: event.target.value });
         setNewValue({ ...newValue, [field]: event.target.value });
     };
     const handleStatusChange = (value: any) => {
-        console.log(value);
         setPost({ ...post, contestId: value });
         setNewValue({ ...newValue, contestId: value });
     };
 
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files.length > 0) {
+            setImageFile(event.target.files[0]);
+        }
+    };
 
     const handlePostPrizes = async () => {
         const action: string = 'create';
@@ -99,17 +97,13 @@ export default function ModalCrudPremios({ action, abrirModal = false, title, se
             await putApi(`https://privatedevs.com/api-contest/api/v1/prizes/${data._id}`, { name: post.name, description: post.description, contestId: post.contestId, orderToLot: post.orderToLot });
         }
 
-        if (files.length > 0) {
-            await uploadImage(`https://privatedevs.com/api-contest/api/v1/uploads/prizes/${data._id}`, files[0]);
+        if (imageFile) {
+            await uploadImage(`https://privatedevs.com/api-contest/api/v1/uploads/prizes/${data._id}`, imageFile);
         }
-
+        // 
         setPost(initialState);
         close();
     };
-    const previews = files.map((file, index) => {
-        const imageUrl = URL.createObjectURL(file);
-        return <Image height={200} width={200} key={index} src={imageUrl} onLoad={() => URL.revokeObjectURL(imageUrl)} />;
-    });
 
 
 
@@ -125,8 +119,7 @@ export default function ModalCrudPremios({ action, abrirModal = false, title, se
                     {
                         action === "edit" ? (
                             <>
-                                <DropzoneCol onDrop={handleDrop} />
-                                <PreviewCol previews={previews} />
+                                <InputCol label="imagen" placeholder="imagen" type='file' onChange={handleFileChange} />
                             </>
                         ) : null
                     }
@@ -201,8 +194,4 @@ const ButtonCol = ({ onClick }: any) => (
     </Grid.Col>
 );
 
-function putApi (arg0: string, arg1: { name: string; description: string; contestId: number; orderToLot: number; })
-{
-    throw new Error('Function not implemented.');
-}
 

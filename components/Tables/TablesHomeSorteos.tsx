@@ -64,7 +64,7 @@ export function TableHomeSorteos() {
                     </Table>
                 </Table.ScrollContainer>
             </Card>
-        <ModalCrudSorteos abrirModal={openModalEdit} setModalEdit={setOpenModalEdit} title='Sorteo' data={data} action={action} />|
+        <ModalCrudSorteos abrirModal={openModalEdit} setModalEdit={setOpenModalEdit} title='Sorteo' data={data} action={action} />
             <ModalDelete abrirModal={openModalDelete} setModalDelete={setOpenModalDelete} title='sorteo: ' data={data} action='contest' />
         </>
     );

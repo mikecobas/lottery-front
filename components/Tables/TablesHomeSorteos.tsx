@@ -14,6 +14,13 @@ import Link from 'next/link';
 import ModalSorteo from '../Modals/ModalSorteo';
 type action = 'edit' | 'create'
 export function TableHomeSorteos() {
+    const [localStorageUser, setLocalStorageUser] = useState<User>();
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            setLocalStorageUser(user);
+        }
+    }, []);
     const { getContests } = useContest()
     const [errorRound, setErrorRound] = useState(false)
     useEffect(() => {
@@ -26,7 +33,9 @@ export function TableHomeSorteos() {
     const [action, setaction] = useState<action>("create")
     const [openModalDelete, setOpenModalDelete] = useState(false)
     const [data, setData] = useState<Contest>()
-    const rows = state.payload.map((contest, index) => (
+    const rows = state.payload
+        .filter(contest => localStorageUser?.name === contest.createdBy.name)
+        .map((contest, index) => (
             <Table.Tr key={index}>
                 <Table.Td>{contest.name}</Table.Td>
                 <Table.Td>{contest.rounds}</Table.Td>
@@ -34,7 +43,7 @@ export function TableHomeSorteos() {
                 <Table.Td>{contest.createdBy.name}</Table.Td>
                 <Table.Td>
                     <Group>
-                    <Menu shadow="md" width={200}>
+                        <Menu shadow="md" width={200}>
                             <Menu.Target>
                                 <Button>Acciones</Button>
                             </Menu.Target>
@@ -45,37 +54,37 @@ export function TableHomeSorteos() {
                                     color={'blue'}
                                     onClick={() => { setOpenModalEdit(true), setData(contest), setaction("edit") }}
                                     leftSection={<IconSettings style={{ width: rem(14), height: rem(14) }} />}>
-                                Publicar enlace
+                                    Publicar enlace
                                 </Menu.Item>
                                 <Menu.Item
                                     onClick={() => { setOpenModalEdit(true), setData(contest), setaction("edit") }}
                                     leftSection={<IconSettings style={{ width: rem(14), height: rem(14) }} />}>
-                                Editar
+                                    Editar
                                 </Menu.Item>
-                                <Menu.Item 
+                                <Menu.Item
                                     color='red'
                                     onClick={() => { setOpenModalDelete(true), setData(contest) }}
                                     leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}>
-                                Eliminar
+                                    Eliminar
                                 </Menu.Item>
 
                                 <Menu.Divider />
 
                                 <Menu.Label>Sorteo</Menu.Label>
-                                <Link style={{textDecoration:'none'}} href={'/dashboard/premios'}>
+                                <Link style={{ textDecoration: 'none' }} href={'/dashboard/premios'}>
                                     <Menu.Item
                                         leftSection={<IconPlus style={{ width: rem(14), height: rem(14) }} />}
                                     >
-                                    Agregar premios
+                                        Agregar premios
                                     </Menu.Item>
                                 </Link>
 
                                 <Menu.Item
                                     color='green'
                                     leftSection={<IconArrowsLeftRight style={{ width: rem(14), height: rem(14) }} />}
-                                    onClick={()=>{setOpenSorteoModal(true), setData(contest)}}
+                                    onClick={() => { setOpenSorteoModal(true), setData(contest) }}
                                 >
-                                Sortear premio
+                                    Sortear premio
                                 </Menu.Item>
                             </Menu.Dropdown>
                         </Menu>
@@ -88,7 +97,7 @@ export function TableHomeSorteos() {
         <>
 
 
-    
+
 
             <Card>
                 <Group justify="space-between" pb={24}>
@@ -110,10 +119,10 @@ export function TableHomeSorteos() {
                     </Table>
                 </Table.ScrollContainer>
             </Card>
-        <ModalCrudSorteos abrirModal={openModalEdit} setModalEdit={setOpenModalEdit} title='Sorteo' data={data} action={action} />
+            <ModalCrudSorteos abrirModal={openModalEdit} setModalEdit={setOpenModalEdit} title='Sorteo' data={data} action={action} />
             <ModalDelete abrirModal={openModalDelete} setModalDelete={setOpenModalDelete} title='sorteo: ' data={data} action='contest' />
-            <ModalSorteo data={data} open={openSorteoModal} onClose={() => setOpenSorteoModal(false)}  title='Sortear premios'></ModalSorteo>
-            {errorRound && <Notification onClose={()=>setErrorRound(false)} pos={'absolute'} right={'0'} bottom={'0'} color="red" title="Ha ocurrido un error">
+            <ModalSorteo data={data} open={openSorteoModal} onClose={() => setOpenSorteoModal(false)} title='Sortear premios'></ModalSorteo>
+            {errorRound && <Notification onClose={() => setErrorRound(false)} pos={'absolute'} right={'0'} bottom={'0'} color="red" title="Ha ocurrido un error">
                 Asegúrate de haber creado los premios necesarios
             </Notification>}
         </>

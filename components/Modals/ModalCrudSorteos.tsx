@@ -1,18 +1,16 @@
 'use client'
-import { useDisclosure } from '@mantine/hooks';
-import React, { use, useContext, useEffect, useState } from 'react'
+import React from 'react'
 import { Grid, Select, TextInput, Text, Image, SimpleGrid, Group, rem, Center, Card, Button, Skeleton, Modal } from '@mantine/core'
-import { Dropzone, IMAGE_MIME_TYPE, FileWithPath, DropzoneProps } from '@mantine/dropzone';
+import { Dropzone, IMAGE_MIME_TYPE, FileWithPath, } from '@mantine/dropzone';
 import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react';
-import useContestPost from '@/hooks/useContestPost';
 import { Contest } from '@/interfaces/constest.inteface';
-import useContest from '@/hooks/useConstest';
+import useModalCrudSorteos from '@/hooks/useModalCrudSorteos';
 const initialState = { name: "", contestStatus: "", rounds: 0, contestDate: "", previewImg: <Skeleton height={160} /> };
 interface ModalCrudSorteosProps {
     abrirModal?: boolean;
     title?: string
     setModalEdit?: (value: boolean) => void
-    data?: Contest 
+    data?: Contest
 }
 export default function ModalCrudSorteos({ abrirModal = false, title, setModalEdit = () => { }, data = {
     _id: "",
@@ -25,15 +23,7 @@ export default function ModalCrudSorteos({ abrirModal = false, title, setModalEd
     createdAt: "",
     contestStatus: "",
 } }: ModalCrudSorteosProps) {
-    const { getContests } = useContest()
-    const { postContest } = useContestPost();
-    const [opened, { open, close }] = useDisclosure(false);
-    const [post, setPost] = useState(initialState);
-    const [newValue, setNewValue] = useState(data)
-    const [files, setFiles] = useState<FileWithPath[]>([]);
-    useEffect(() => {
-        abrirModal ? open() : close()
-    }, [abrirModal])
+    const { setFiles, setPost, post, files, opened, handleInputChange, newValue, handleStatusChange, handlePostContest, getContests } = useModalCrudSorteos(data, abrirModal, setModalEdit, initialState);
     const handleDrop = (files: FileWithPath[]) => {
         setFiles(files);
         const previews = files.map((file, index) => {
@@ -41,22 +31,6 @@ export default function ModalCrudSorteos({ abrirModal = false, title, setModalEd
             return <Image key={index} src={imageUrl} onLoad={() => URL.revokeObjectURL(imageUrl)} />;
         });
         setPost({ ...post, previewImg: previews[0] });
-    };
-
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: string) => {
-        setPost({ ...post, [field]: event.target.value });
-        setNewValue({ ...newValue, [field]: event.target.value });
-    };
-
-    const handleStatusChange = (value: any) => {
-        setPost({ ...post, contestStatus: value });
-        setNewValue({ ...newValue, contestStatus: value });
-    };
-
-    const handlePostContest = () => {
-        postContest({ name: post.name, contestStatus: post.contestStatus, rounds: post.rounds, contestDate: post.contestDate, });
-        setPost(initialState);
-        close();
     };
 
     const previews = files.map((file, index) => {

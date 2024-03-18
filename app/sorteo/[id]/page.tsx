@@ -8,8 +8,6 @@ import CardPrize from '@/components/Lotterys/CardPrize';
 import { IconChevronDown } from '@tabler/icons-react';
 import usePrices from '@/hooks/usePrices';
 import useCountDown from '@/hooks/useCountDown';
-import { Contest, Prize } from '@/interfaces/prices.interface';
-import useRegister from '@/hooks/useRegister';
 
 export const socket = io('https://privatedevs.com', 
   {path: '/api-contest/socket.io',
@@ -18,13 +16,11 @@ export const socket = io('https://privatedevs.com',
 export default function SorteoPage({ params }: { params: { id: string } }) {
   const [opened, setOpened] = useState<boolean | undefined>(false);
   const [timmer, setTimmer] = useState("00:00:00");
-  const [discordUser, setDiscordUser] = useState("")
   const premios = useRef<HTMLDivElement>(null);
-  const [prizes, setPrizes] = useState<Prize[]>();
-  const [contest, setContest] = useState<Contest>()
   const {data, getPrices} = usePrices(params.id);
+  const prizes = data?.payload[0].prizes
+  const contest = data?.payload[0].contest
   const {timeLeft} = useCountDown({targetDate: contest?.contestDate!})
-  const {loading, response, register} = useRegister(params.id);
 
   useEffect(() => {
     setTimmer(
@@ -56,39 +52,6 @@ export default function SorteoPage({ params }: { params: { id: string } }) {
     };
   }, [socket]);
 
-  useEffect(() => {
-    setPrizes(data?.payload.prizes)
-    setContest(data?.payload.contest)
-  }, [data])
-
-  const getStatusContest = () => {
-    if(prizes){
-      console.log(prizes)
-      if(prizes[prizes?.length - 1].markAsDelivery){
-        return 'Sorteo terminado'
-      }
-      else{
-        return 'Sorteo en curso'
-      }
-    }
-    else{
-      return ''
-    }
-
-  }    
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDiscordUser(e.target.value)
-  }
-
-  const handleRegister = () => {
-    if(discordUser.length >0)
-      register(discordUser)
-    else{
-
-    }
-  }
-
   return (
     <AppShell
       header={{ height: 60 }}
@@ -114,12 +77,11 @@ export default function SorteoPage({ params }: { params: { id: string } }) {
             <Title order={1} style={{textAlign: 'center'}} fw={400} pb={50} pt={100}>Sorteo: <span style={{fontSize: '60px', fontWeight: '600'}}>{contest?.name}</span></Title>
             {/* <Title order={1} style={{textAlign: 'center'}} pt={20}>Ronda: 1</Title> */}
             {timeLeft.days > 0 && <Title order={1} style={{textAlign: 'center'}}>{timeLeft.days} días</Title>}
-            {!timeLeft.ended && <Title className={styles.titleTime} order={2}>{timmer}</Title>}
-            {timeLeft.ended &&<Title className={styles.titleTime} order={2}>{getStatusContest()}</Title>}
+            <Title className={styles.titleTime} order={2}>{timmer}</Title>
             
             <Flex style={{zIndex: '2', margin: 'auto'}} gap={20} maw={'400px'} direction={'column'} align={'center'} justify={'center'}>
-              <TextInput value={discordUser} onChange={handleChange} style={{width:'100%'}} label="Usuario de Discord" variant="filled" size="xl" radius="lg" placeholder="pepito123" />
-              <Button loading={loading} onClick={handleRegister} fullWidth radius={'lg'} size='xl' color='teal'>Regístrate</Button>
+              <TextInput style={{width:'100%'}} label="Usuario de Discord" variant="filled" size="xl" radius="lg" placeholder="pepito123" />
+              <Button fullWidth radius={'lg'} size='xl' color='teal'>Regístrate</Button>
             </Flex>
             <Flex pt={100}>
               <Button  fz={22} leftSection={<IconChevronDown size={30} />}  rightSection={<IconChevronDown size={30} />} style={{margin: 'auto'}} variant="transparent" color="gray" size="xl">Ver premios </Button>
@@ -135,7 +97,7 @@ export default function SorteoPage({ params }: { params: { id: string } }) {
         <Flex wrap={'wrap'} justify={'center'} pt={50} gap={20}>
           {prizes?.map(prize => 
             <CardPrize 
-              key={prize.contestId} 
+              key={prize.orderToLot} 
               name={prize.name} 
               image={prize.image} 
               markAsDelivery={prize.markAsDelivery}

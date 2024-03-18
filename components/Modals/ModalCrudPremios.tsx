@@ -60,7 +60,6 @@ export default function ModalCrudSorteos({ action, abrirModal = false, title, se
         })
         setNombresSorteos(tempNombresSorteos);
         setSorteos(tempSorteos);
-        console.log(state);
     }, [state, localStorageUser])
 
 

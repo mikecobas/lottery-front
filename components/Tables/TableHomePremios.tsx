@@ -90,7 +90,7 @@ export function TableHomePremios() {
                 )
             }
 
-            <ModalCrudPremios abrirModal={openModalEdit} setModalEdit={setOpenModalEdit} title='Editar premio' data={data} action={action} />
+            <ModalCrudPremios abrirModal={openModalEdit} setModalEdit={setOpenModalEdit} title='Premio' data={data} action={action} />
             <ModalDelete abrirModal={openModalDelete} setModalDelete={setOpenModalDelete} data={data} action='prize' />
         </>
     );

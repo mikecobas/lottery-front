@@ -49,7 +49,7 @@ export function TableHomePremios() {
                 <Table.Td>{prizes.status}</Table.Td>
                 <Table.Td>
                     <Group>
-                        <ActionIcon variant="filled" aria-label="Settings" onClick={() => { setOpenModalEdit(true), setData(prizes), getPrizes() }}>
+                        <ActionIcon variant="filled" aria-label="Settings" onClick={() => { setOpenModalEdit(true), setData(prizes), getPrizes(), setaction("edit") }}>
                             <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
                         </ActionIcon>
                         <ActionIcon variant="filled" color="red" aria-label="Settings" onClick={() => { setOpenModalDelete(true), getPrizes(), setData(prizes) }}>

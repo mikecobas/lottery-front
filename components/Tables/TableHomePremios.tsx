@@ -15,7 +15,9 @@ export function TableHomePremios() {
     const [openModalEdit, setOpenModalEdit] = useState(false)
     const [openModalDelete, setOpenModalDelete] = useState(false)
     const [data, setData] = useState<any>()
-    const rows = state.payload.map((prizes, index) => (
+    const rows = state.payload
+    .filter(prizes => prizes.status === true)
+    .map((prizes, index) => (
         <Table.Tr key={index}>
             <Table.Td>{prizes.name}</Table.Td>
             <Table.Td>{prizes.description}</Table.Td>
@@ -33,7 +35,6 @@ export function TableHomePremios() {
             </Table.Td>
         </Table.Tr>
     ));
-
     return (
         <>
 

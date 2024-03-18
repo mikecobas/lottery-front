@@ -19,24 +19,25 @@ export function TableHomeSorteos() {
     const [action, setaction] = useState<action>("create")
     const [openModalDelete, setOpenModalDelete] = useState(false)
     const [data, setData] = useState<Contest>()
-    const rows = state.payload.map((contest, index) => (
-        <Table.Tr key={index}>
-            <Table.Td>{contest.name}</Table.Td>
-            <Table.Td>{contest.rounds}</Table.Td>
-            <Table.Td>{contest.contestStatus}</Table.Td>
-            <Table.Td>{contest.createdBy.name}</Table.Td>
-            <Table.Td>
-                <Group>
-                    <ActionIcon variant="filled" aria-label="Settings" onClick={() => { setOpenModalEdit(true), setData(contest), setaction("edit") }}>
-                        <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
-                    </ActionIcon>
-                    <ActionIcon variant="filled" color="red" aria-label="Settings" onClick={() => { setOpenModalDelete(true), setData(contest) }} >
-                        <IconTrash style={{ width: '70%', height: '70%' }} stroke={1.5} />
-                    </ActionIcon>
-                </Group>
-            </Table.Td>
-        </Table.Tr>
-    ));
+    const rows = state.payload.filter(contest => contest.status === true)
+        .map((contest, index) => (
+            <Table.Tr key={index}>
+                <Table.Td>{contest.name}</Table.Td>
+                <Table.Td>{contest.rounds}</Table.Td>
+                <Table.Td>{contest.contestStatus}</Table.Td>
+                <Table.Td>{contest.createdBy.name}</Table.Td>
+                <Table.Td>
+                    <Group>
+                        <ActionIcon variant="filled" aria-label="Settings" onClick={() => { setOpenModalEdit(true), setData(contest), setaction("edit") }}>
+                            <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
+                        </ActionIcon>
+                        <ActionIcon variant="filled" color="red" aria-label="Settings" onClick={() => { setOpenModalDelete(true), setData(contest) }} >
+                            <IconTrash style={{ width: '70%', height: '70%' }} stroke={1.5} />
+                        </ActionIcon>
+                    </Group>
+                </Table.Td>
+            </Table.Tr>
+        ));
 
     return (
         <>

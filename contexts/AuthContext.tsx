@@ -19,8 +19,9 @@ type Action =
   | { type: 'LOGIN'; payload: { user: User; token: string } }
   | { type: 'LOGOUT' };
 
+const storedUser = typeof window !== 'undefined' && window.localStorage ? localStorage.getItem('user') : null;
 const initialState: State = {
-  user: null,
+  user: storedUser ? JSON.parse(storedUser) : null,
   token: typeof window !== 'undefined' && window.localStorage ? localStorage.getItem('token') : null,
 };
 
@@ -44,8 +45,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(authReducer, initialState);
   console.log(state);
   useEffect(() => {
+    localStorage.setItem('user', JSON.stringify(state.user));
     localStorage.setItem('token', state.token || '');
-  }, [state.token]);
+    localStorage.setItem('user', JSON.stringify(state.user) || '');
+  }, [state.token, state.user]);
 
   return (
     <AuthContext.Provider value={{ state, dispatch }}>

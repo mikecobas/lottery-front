@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Button, Card, Center, PasswordInput, TextInput, Title } from '@mantine/core';
 import useAuth from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
+import {Md5} from 'ts-md5'
+
 
 const Login = () => {
     const router = useRouter();
@@ -12,7 +14,7 @@ const Login = () => {
     const handleSubmit = async (event: any) => {
         event.preventDefault();
         try {
-            await login(email, password);
+            await login(email, Md5.hashStr(password));
             router.push('/dashboard');
         } catch (error) {
             console.error(error);

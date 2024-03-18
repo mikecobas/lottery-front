@@ -15,11 +15,12 @@ export function TableHomePremios() {
     const [openModalEdit, setOpenModalEdit] = useState(false)
     const [openModalDelete, setOpenModalDelete] = useState(false)
     const [data, setData] = useState<any>()
+    console.log(state.payload);
     const rows = state.payload.map((prizes, index) => (
         <Table.Tr key={index}>
             <Table.Td>{prizes.name}</Table.Td>
             <Table.Td>{prizes.description}</Table.Td>
-            <Table.Td>{prizes.contestId.name}</Table.Td>
+            <Table.Td>{prizes.contestId?.name}</Table.Td>
             <Table.Td>{prizes.status}</Table.Td>
             <Table.Td>
                 <Group>

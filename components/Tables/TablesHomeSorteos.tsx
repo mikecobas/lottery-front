@@ -49,27 +49,36 @@ export function TableHomeSorteos() {
 
     return (
         <>
+            {
+                rows.length === 0 ? (<Card shadow="sm" p={20} mt={20} style={{ textAlign: 'center' }}>
+                    <Title order={3}>No hay sorteos registrados</Title>
+                    <Button onClick={() => { setOpenModalEdit(true), setaction("create") }} >Agregar sorteo</Button>
+                </Card>) : (
 
-            <Card>
-                <Group justify="space-between" pb={24}>
-                    <Title order={1}>Sorteos</Title>
-                    <Button onClick={() => { setOpenModalEdit(true), setaction("create") }}>Crear sorteo</Button>
-                </Group>
-                <Table.ScrollContainer minWidth={500} h={350}>
-                    <Table striped   >
-                        <Table.Thead>
-                            <Table.Tr>
-                                <Table.Th>Nombre del sorteo</Table.Th>
-                                <Table.Th>Rondas </Table.Th>
-                                <Table.Th>Estado</Table.Th>
-                                <Table.Th>Creado por</Table.Th>
-                                <Table.Th>Acciones</Table.Th>
-                            </Table.Tr>
-                        </Table.Thead>
-                        <Table.Tbody>{rows}</Table.Tbody>
-                    </Table>
-                </Table.ScrollContainer>
-            </Card>
+                    <Card>
+                        <Group justify="space-between" pb={24}>
+                            <Title order={1}>Sorteos</Title>
+                            <Button onClick={() => { setOpenModalEdit(true), setaction("create") }}>Crear sorteo</Button>
+                        </Group>
+                        <Table.ScrollContainer minWidth={500} h={350}>
+                            <Table striped   >
+                                <Table.Thead>
+                                    <Table.Tr>
+                                        <Table.Th>Nombre del sorteo</Table.Th>
+                                        <Table.Th>Rondas </Table.Th>
+                                        <Table.Th>Estado</Table.Th>
+                                        <Table.Th>Creado por</Table.Th>
+                                        <Table.Th>Acciones</Table.Th>
+                                    </Table.Tr>
+                                </Table.Thead>
+                                <Table.Tbody>{rows}</Table.Tbody>
+                            </Table>
+                        </Table.ScrollContainer>
+                    </Card>
+
+                )
+            }
+
             <ModalCrudSorteos abrirModal={openModalEdit} setModalEdit={setOpenModalEdit} title='Editar sorteo' data={data} action={action} />
             <ModalDelete abrirModal={openModalDelete} setModalDelete={setOpenModalDelete} title='sorteo: ' data={data} action='contest' />
         </>

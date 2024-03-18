@@ -61,27 +61,35 @@ export function TableHomePremios() {
         ));
     return (
         <>
-
-            <Card>
-                <Group justify="space-between" pb={24}>
-                    <Title order={1}>Premios</Title>
+            {
+                rows.length === 0 ? (<Card shadow="sm" p={20} mt={20} style={{ textAlign: 'center' }}>
+                    <Title order={3}>No hay premios registrados</Title>
                     <Button onClick={() => { setOpenModalEdit(true), setaction("create") }} >Agregar premio</Button>
-                </Group>
-                <Table.ScrollContainer minWidth={500} h={350}>
-                    <Table striped   >
-                        <Table.Thead>
-                            <Table.Tr>
-                                <Table.Th>Nombre del premio</Table.Th>
-                                <Table.Th>Descripción </Table.Th>
-                                <Table.Th>Sorteo</Table.Th>
-                                <Table.Th></Table.Th>
-                                <Table.Th>Acciones</Table.Th>
-                            </Table.Tr>
-                        </Table.Thead>
-                        <Table.Tbody>{rows}</Table.Tbody>
-                    </Table>
-                </Table.ScrollContainer>
-            </Card>
+                </Card>) : (
+                    <Card>
+                        <Group justify="space-between" pb={24}>
+                            <Title order={1}>Premios</Title>
+                            <Button onClick={() => { setOpenModalEdit(true), setaction("create") }} >Agregar premio</Button>
+                        </Group>
+                        <Table.ScrollContainer minWidth={500} h={350}>
+                            <Table striped   >
+                                <Table.Thead>
+                                    <Table.Tr>
+                                        <Table.Th>Nombre del premio</Table.Th>
+                                        <Table.Th>Descripción </Table.Th>
+                                        <Table.Th>Sorteo</Table.Th>
+                                        <Table.Th></Table.Th>
+                                        <Table.Th>Acciones</Table.Th>
+                                    </Table.Tr>
+                                </Table.Thead>
+                                <Table.Tbody>{rows}</Table.Tbody>
+                            </Table>
+                        </Table.ScrollContainer>
+                    </Card>
+
+                )
+            }
+
             <ModalCrudPremios abrirModal={openModalEdit} setModalEdit={setOpenModalEdit} title='Editar premio' data={data} action={action} />
             <ModalDelete abrirModal={openModalDelete} setModalDelete={setOpenModalDelete} data={data} action='prize' />
         </>

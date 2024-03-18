@@ -7,19 +7,27 @@ import { useContext, useEffect, useState } from 'react';
 import ModalCrudSorteos from '../Modals/ModalCrudSorteos';
 import { ModalDelete } from '../Modals/ModalDelete';
 import { Contest } from '@/interfaces/constest.inteface';
+import { User } from '@/interfaces/auth.interface';
 type action = 'edit' | 'create'
 export function TableHomeSorteos() {
+    const [localStorageUser, setLocalStorageUser] = useState<User>();
     const { getContests } = useContest()
     useEffect(() => {
         getContests();
     }, [])
-
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            setLocalStorageUser(user);
+        }
+    }, []);
     const { state } = useContext(ContestContext);
     const [openModalEdit, setOpenModalEdit] = useState(false)
     const [action, setaction] = useState<action>("create")
     const [openModalDelete, setOpenModalDelete] = useState(false)
     const [data, setData] = useState<Contest>()
-    const rows = state.payload.filter(contest => contest.status === true)
+    const rows = state.payload
+        .filter(contest => contest.status === true && contest.createdBy.name === localStorageUser?.name)
         .map((contest, index) => (
             <Table.Tr key={index}>
                 <Table.Td>{contest.name}</Table.Td>

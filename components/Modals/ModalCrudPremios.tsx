@@ -41,7 +41,6 @@ export default function ModalCrudSorteos({ abrirModal = false, title, setModalEd
     const [opened, { open, close }] = useDisclosure(false);
     const [post, setPost] = useState(initialState);
     const [newValue, setNewValue] = useState(data)
-    const { postContest } = useContestPost();
     const [files, setFiles] = useState<FileWithPath[]>([]);
     const { post: postApi } = useApi();
     useEffect(() => {

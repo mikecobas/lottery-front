@@ -15,7 +15,6 @@ export function TableHomePremios() {
     const [openModalEdit, setOpenModalEdit] = useState(false)
     const [openModalDelete, setOpenModalDelete] = useState(false)
     const [data, setData] = useState<any>()
-    console.log(state.payload);
     const rows = state.payload.map((prizes, index) => (
         <Table.Tr key={index}>
             <Table.Td>{prizes.name}</Table.Td>
@@ -27,7 +26,7 @@ export function TableHomePremios() {
                     <ActionIcon variant="filled" aria-label="Settings" onClick={() => { setOpenModalEdit(true), setData(prizes), getPrizes() }}>
                         <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
                     </ActionIcon>
-                    <ActionIcon variant="filled" color="red" aria-label="Settings" onClick={() => { setOpenModalDelete(true), getPrizes() }}>
+                    <ActionIcon variant="filled" color="red" aria-label="Settings" onClick={() => { setOpenModalDelete(true), getPrizes(),setData(prizes) }}>
                         <IconTrash style={{ width: '70%', height: '70%' }} stroke={1.5} />
                     </ActionIcon>
                 </Group>
@@ -59,7 +58,7 @@ export function TableHomePremios() {
                 </Table.ScrollContainer>
             </Card>
             <ModalCrudPremios abrirModal={openModalEdit} setModalEdit={setOpenModalEdit} title='Editar premio' data={data} />
-            <ModalDelete abrirModal={openModalDelete} setModalDelete={setOpenModalDelete} data={data} />
+            <ModalDelete abrirModal={openModalDelete} setModalDelete={setOpenModalDelete} data={data} action='prize' />
         </>
     );
 }

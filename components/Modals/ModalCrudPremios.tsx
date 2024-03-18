@@ -84,6 +84,7 @@ export default function ModalCrudSorteos({ abrirModal = false, title, setModalEd
     };
 
     const handlePostPrizes = async () => {
+        const action: string = 'create';
 
         if (action === 'create') {
             await postApi('https://privatedevs.com/api-contest/api/v1/prizes/create', { name: post.name, description: post.description, contestId: post.contestId, orderToLot: post.orderToLot });
@@ -182,4 +183,9 @@ const ButtonCol = ({ onClick }: any) => (
         </Group>
     </Grid.Col>
 );
+
+function putApi (arg0: string, arg1: { name: string; description: string; contestId: number; orderToLot: number; })
+{
+    throw new Error('Function not implemented.');
+}
 

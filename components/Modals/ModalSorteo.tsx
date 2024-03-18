@@ -10,7 +10,7 @@ interface ModalCrudSorteosProps {
     onClose: () => any;
 }
 export default function ModalCrudSorteos({open, title, onClose, data}: ModalCrudSorteosProps) {
-    const {prices, handleClick, prepared, handleLot} = useModalSorteo({data: data});
+    const {prices, handleClick, prepared, handleLot, users} = useModalSorteo({data: data, open});
 
     const rows = prices?.map((element) => (
         <Table.Tr key={element.name}>
@@ -23,6 +23,7 @@ export default function ModalCrudSorteos({open, title, onClose, data}: ModalCrud
     
       return (
         <Modal opened={open} onClose={onClose} title={title} centered size="xl">
+            <Group justify='end'>{users.length} Usuarios registrados</Group>
             <Table>
                 <Table.Thead>
                     <Table.Tr>

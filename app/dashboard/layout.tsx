@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useContext, useState } from "react";
+import { useRouter } from 'next/navigation'
 import Navbar from "@/components/Navbar/Navbar";
 import NavbarFooter from "@/components/Navbar/NavbarFooter";
 import {
@@ -13,29 +14,28 @@ import {
   Skeleton,
   Title,
 } from "@mantine/core";
-import { IconChevronRight } from "@tabler/icons-react";
+import { IconLogout } from "@tabler/icons-react";
 import { AuthContext } from "@/contexts/AuthContext";
 import AvatarLogo from "../../assets/normal-face.png";
+import { redirect } from 'next/navigation';
 
 export default function DashboardLayout({
   children, // will be a page or nested layout
 }: {
   children: React.ReactNode;
 }) {
-  const { state } = useContext(AuthContext);
+  const router = useRouter()
+ 
+  const { state, dispatch } = useContext(AuthContext);
   const [opened, setOpened] = useState(false);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    if (
-      state.token === null ||
-      state.token === "" ||
-      state.token === undefined ||
-      state.token.length <= 12
-    ) {
-      window.location.href = "/";
+    const isTokenInvalid = !state.token || state.token.length <= 12;
+    if (isTokenInvalid) {
+      router.replace("/");
     }
     setLoading(false);
-  }, []);
+  }, [state.token, router]);
   if (!loading) {
     return (
       <AppShell
@@ -79,10 +79,11 @@ export default function DashboardLayout({
             {state.user ? (
               <NavLink
                 label={state.user ? state.user.name : "Anónimo"}
+                onClick={() => {dispatch({ type: "LOGOUT" }); router.replace("/");}}
                 description={state.user ? state.user.email : "Inicia sesión"}
-                rightSection={<IconChevronRight />}
+                rightSection={<IconLogout />}
                 leftSection={
-                  <Avatar src="./assets/normal-face.png" radius="xl" />
+                  <Avatar src="/assets/normal-face.png" radius="xl" />
                 }
               />
             ) : null}

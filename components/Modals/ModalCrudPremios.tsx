@@ -20,7 +20,6 @@ interface ModalCrudSorteosProps {
     title?: string
     setModalEdit?: (value: boolean) => void
     data?: Payload | undefined
-    action: "create" | "edit"
 }
 
 export default function ModalCrudPremios({ action, abrirModal = false, title, setModalEdit = () => { }, data = {
@@ -60,8 +59,11 @@ export default function ModalCrudPremios({ action, abrirModal = false, title, se
                 tempNombresSorteos.push({ label: sorteo.name, value: sorteo._id })
             }
         })
+        console.log(tempNombresSorteos);
+        // Actualizar estados
         setNombresSorteos(tempNombresSorteos);
         setSorteos(tempSorteos);
+
     }, [state, localStorageUser])
     useEffect(() => {
 
@@ -88,6 +90,8 @@ export default function ModalCrudPremios({ action, abrirModal = false, title, se
 
 
     const handlePostPrizes = async () => {
+        const action: string = 'create';
+
         if (action === 'create') {
             await postApi('https://privatedevs.com/api-contest/api/v1/prizes/create', { name: post.name, description: post.description, contestId: post.contestId, orderToLot: post.orderToLot });
         } else if (action === 'edit' && data) {
@@ -191,8 +195,13 @@ const PreviewCol = ({ previews }: any) => (
 const ButtonCol = ({ onClick }: any) => (
     <Grid.Col span={{ base: 12, md: 6, lg: 12 }}>
         <Group justify="end">
-            <Button onClick={onClick}>Agregar premio</Button>
+            <Button onClick={onClick}>Publicar sorteo</Button>
         </Group>
     </Grid.Col>
 );
+
+function putApi (arg0: string, arg1: { name: string; description: string; contestId: number; orderToLot: number; })
+{
+    throw new Error('Function not implemented.');
+}
 

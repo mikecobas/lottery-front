@@ -1,30 +1,17 @@
 import { PrizesContext } from '@/contexts/PrizesContext';
 import usePrizes from '@/hooks/usePrizes';
-import { ActionIcon, Button, Card, Group, Table, TextInput, Title } from '@mantine/core';
+import { ActionIcon, Card, Group, Table, TextInput, Title } from '@mantine/core';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import { useContext, useEffect, useState } from 'react';
 import ModalCrudPremios from '../Modals/ModalCrudPremios';
 import { ModalDelete } from '../Modals/ModalDelete';
-import { User } from '@/interfaces/auth.interface';
-import { ContestContext } from '@/contexts/ContestContext';
-type action = 'edit' | 'create'
+
 export function TableHomePremios() {
-    const [localStorageUser, setLocalStorageUser] = useState<User>();
     const { getPrizes } = usePrizes()
     useEffect(() => {
         getPrizes();
     }, [])
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const user = JSON.parse(localStorage.getItem('user') || '{}');
-            setLocalStorageUser(user);
-        }
-    }, []);
     const { state } = useContext(PrizesContext);
-    const [nombresSorteos, setNombresSorteos] = useState<any[]>([]);
-    const [sorteos, setSorteos] = useState<any[]>([]);
-    const { state: stateContest } = useContext(ContestContext);
-    const [action, setaction] = useState<action>("create")
     const [openModalEdit, setOpenModalEdit] = useState(false)
     const [openModalDelete, setOpenModalDelete] = useState(false)
     const [data, setData] = useState<any>()
@@ -61,36 +48,28 @@ export function TableHomePremios() {
         ));
     return (
         <>
-            {
-                rows.length === 0 ? (<Card shadow="sm" p={20} mt={20} style={{ textAlign: 'center' }}>
-                    <Title order={3}>No hay premios registrados</Title>
-                    <Button onClick={() => { setOpenModalEdit(true), setaction("create") }} >Agregar premio</Button>
-                </Card>) : (
-                    <Card>
-                        <Group justify="space-between" pb={24}>
-                            <Title order={1}>Premios</Title>
-                            <Button onClick={() => { setOpenModalEdit(true), setaction("create") }} >Agregar premio</Button>
-                        </Group>
-                        <Table.ScrollContainer minWidth={500} h={350}>
-                            <Table striped   >
-                                <Table.Thead>
-                                    <Table.Tr>
-                                        <Table.Th>Nombre del premio</Table.Th>
-                                        <Table.Th>Descripción </Table.Th>
-                                        <Table.Th>Sorteo</Table.Th>
-                                        <Table.Th></Table.Th>
-                                        <Table.Th>Acciones</Table.Th>
-                                    </Table.Tr>
-                                </Table.Thead>
-                                <Table.Tbody>{rows}</Table.Tbody>
-                            </Table>
-                        </Table.ScrollContainer>
-                    </Card>
+            <Card>
+                <Group justify="space-between" pb={24}>
+                    <Title order={1}>Premios</Title>
+                    <TextInput placeholder='Buscar sorteo' />
+                </Group>
+                <Table.ScrollContainer minWidth={500} h={350}>
+                    <Table striped   >
+                        <Table.Thead>
+                            <Table.Tr>
+                                <Table.Th>Nombre del premio</Table.Th>
+                                <Table.Th>Descripción </Table.Th>
+                                <Table.Th>Sorteo</Table.Th>
+                                <Table.Th></Table.Th>
+                                <Table.Th>Acciones</Table.Th>
+                            </Table.Tr>
+                        </Table.Thead>
+                        <Table.Tbody>{rows}</Table.Tbody>
+                    </Table>
+                </Table.ScrollContainer>
+            </Card>
+  <ModalCrudPremios abrirModal={openModalEdit} setModalEdit={setOpenModalEdit} title='Premio' data={data} action={action} />
 
-                )
-            }
-
-            <ModalCrudPremios abrirModal={openModalEdit} setModalEdit={setOpenModalEdit} title='Premio' data={data} action={action} />
             <ModalDelete abrirModal={openModalDelete} setModalDelete={setOpenModalDelete} data={data} action='prize' />
         </>
     );

@@ -1,7 +1,11 @@
-import React from 'react'
+'use client'
+import { TableUsers } from "@/components/Tables/TableUsers";
+import React from "react";
 
-export default function page() {
+export default function UsersPage() {
   return (
-    <div>page</div>
-  )
+    <>
+      <TableUsers/>
+    </>
+  );
 }

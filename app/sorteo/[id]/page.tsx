@@ -103,6 +103,10 @@ export default function SorteoPage({ params }: { params: { id: string } }) {
      
   }
 
+  useEffect(() => {
+    getPrices();
+  }, [])
+
   return (
     <AppShell
       header={{ height: 60 }}
@@ -154,6 +158,7 @@ export default function SorteoPage({ params }: { params: { id: string } }) {
               key={prize._id} 
               name={prize.name} 
               image={prize.image} 
+              description={prize.description}
               markAsDelivery={prize.markAsDelivery}
             />)}
         </Flex>

@@ -6,9 +6,10 @@ interface Props {
     name: string,
     image: string,
     markAsDelivery: boolean,
+    description?: string
 }
 
-const CardPrize = ({name, image, markAsDelivery}: Props) => {
+const CardPrize = ({name, image, markAsDelivery, description}: Props) => {
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder maw={300}>
         <Card.Section>
@@ -27,8 +28,7 @@ const CardPrize = ({name, image, markAsDelivery}: Props) => {
         </Group>
 
         <Text size="sm" c="dimmed">
-            With Fjord Tours you can explore more of the magical fjord landscapes with tours and
-            activities on and around the fjords of Norway
+            {description}
         </Text>
 
   </Card>

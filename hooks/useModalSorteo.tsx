@@ -6,17 +6,18 @@ import usePlayContest from './usePlayContest'
 
 interface Props{
     data: Contest | undefined,
+    open: boolean,
 }
 
-const useModalSorteo = ({data}: Props) => {
+const useModalSorteo = ({data, open}: Props) => {
     const {data: dataContest, getPrices} = usePrices(data?._id!)
     const {playContest, createRound, roundData, lotData} = usePlayContest();
     const [prices, setPrices] = useState<Prize[] | undefined>([])
-    const [users, setUsers] = useState<any>([])
+    const [users, setUsers] = useState<any[]>([])
     const [prepared, setPrepared] = useState(false)
 
     const handleClick = () => {
-        let round = prices?.findIndex((el) => el.markAsDelivery == false)
+        let round = prices?.findIndex((el: Prize) => el.markAsDelivery == false)
         createRound({idContest: data?._id!, round: (round! + 1)})
     }
 
@@ -24,12 +25,17 @@ const useModalSorteo = ({data}: Props) => {
         playContest(roundData?.payload._id!)
     }
     useEffect(() => {
-        getPrices();
-    }, [data])
+        if(data?._id !== undefined){
+            getPrices();
+        }
+    }, [open])
 
     useEffect(() => {
-        setPrices(dataContest?.payload.prizes)
-        setUsers(dataContest?.payload.registeredUsers)
+        if(dataContest?.payload.prizes){
+            setPrices(dataContest?.payload.prizes)
+            setUsers(dataContest?.payload.registeredUsers)
+        }
+
     }, [dataContest])
 
     useEffect(() => {

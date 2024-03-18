@@ -19,10 +19,9 @@ interface ModalCrudSorteosProps {
     title?: string
     setModalEdit?: (value: boolean) => void
     data?: Payload | undefined
-    action: "create" | "edit"
 }
 
-export default function ModalCrudSorteos({ action, abrirModal = false, title, setModalEdit = () => { }, data = {
+export default function ModalCrudSorteos({ abrirModal = false, title, setModalEdit = () => { }, data = {
     name: "",
     description: ""
 } }: ModalCrudSorteosProps) {
@@ -43,7 +42,7 @@ export default function ModalCrudSorteos({ action, abrirModal = false, title, se
     const [post, setPost] = useState(initialState);
     const [newValue, setNewValue] = useState(data)
     const [files, setFiles] = useState<FileWithPath[]>([]);
-    const { post: postApi, put: putApi } = useApi();
+    const { post: postApi } = useApi();
     useEffect(() => {
         abrirModal ? open() : close()
     }, [abrirModal])
@@ -58,8 +57,11 @@ export default function ModalCrudSorteos({ action, abrirModal = false, title, se
                 tempNombresSorteos.push({ label: sorteo.name, value: sorteo._id })
             }
         })
+        console.log(tempNombresSorteos);
+        // Actualizar estados
         setNombresSorteos(tempNombresSorteos);
         setSorteos(tempSorteos);
+
     }, [state, localStorageUser])
 
 
@@ -82,11 +84,13 @@ export default function ModalCrudSorteos({ action, abrirModal = false, title, se
     };
 
     const handlePostPrizes = async () => {
+
         if (action === 'create') {
             await postApi('https://privatedevs.com/api-contest/api/v1/prizes/create', { name: post.name, description: post.description, contestId: post.contestId, orderToLot: post.orderToLot });
         } else if (action === 'edit' && data) {
             await putApi(`https://privatedevs.com/api-contest/api/v1/prizes/${data._id}`, { name: post.name, description: post.description, contestId: post.contestId, orderToLot: post.orderToLot });
         }
+
         setPost(initialState);
         close();
     };
@@ -174,7 +178,7 @@ const PreviewCol = ({ previews }: any) => (
 const ButtonCol = ({ onClick }: any) => (
     <Grid.Col span={{ base: 12, md: 6, lg: 12 }}>
         <Group justify="end">
-            <Button onClick={onClick}>Agregar premio</Button>
+            <Button onClick={onClick}>Publicar sorteo</Button>
         </Group>
     </Grid.Col>
 );

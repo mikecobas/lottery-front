@@ -40,9 +40,7 @@ type Action =
     | { type: 'SET_ERROR'; error: boolean };
 
 
-const prizesReducer = (state: State, action: Action): State => {
-    console.log(action);
-    switch (action.type) {
+const prizesReducer = (state: State, action: Action): State => {    switch (action.type) {
         case 'SET_PRIZES':
             return { ...state, payload: action.payload.payload };
         case 'SET_ERROR':

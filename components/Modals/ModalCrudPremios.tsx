@@ -1,15 +1,18 @@
 'use client'
 import { useDisclosure } from '@mantine/hooks';
-import React, {  useEffect, useState } from 'react'
-import { Grid, TextInput, Image, SimpleGrid, Group, rem, Center, Card, Button, Skeleton, Modal, Textarea, Text } from '@mantine/core'
+import React, { useContext, useEffect, useState } from 'react'
+import { Grid, TextInput, Image, SimpleGrid, Group, rem, Center, Card, Button, Skeleton, Modal, Textarea, Text, Select } from '@mantine/core'
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath } from '@mantine/dropzone';
 import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react';
 import useContestPost from '@/hooks/useContestPost';
 import { Payload } from '@/interfaces/prizes.interfaces';
 import useApi from '@/api/useApi';
 import usePrizes from '@/hooks/usePrizes';
+import useContest from '@/hooks/useConstest';
+import { ContestContext } from '@/contexts/ContestContext';
+import { User } from '@/interfaces/auth.interface';
 
-const initialState = { name: "", description: "", previewImg: <Skeleton height={160} /> };
+const initialState = { name: "", description: "", contestId: 0, orderToLot: 1 };
 
 interface ModalCrudSorteosProps {
     abrirModal?: boolean;
@@ -22,7 +25,19 @@ export default function ModalCrudSorteos({ abrirModal = false, title, setModalEd
     name: "",
     description: ""
 } }: ModalCrudSorteosProps) {
+    const [localStorageUser, setLocalStorageUser] = useState<User>();
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            setLocalStorageUser(user);
+        }
+    }, []);
+    const [nombresSorteos, setNombresSorteos] = useState<any[]>([]);
+    const [sorteos, setSorteos] = useState<any[]>([]);
     const { getPrizes } = usePrizes()
+    const { getContests } = useContest()
+    const { state } = useContext(ContestContext)
     const [opened, { open, close }] = useDisclosure(false);
     const [post, setPost] = useState(initialState);
     const [newValue, setNewValue] = useState(data)
@@ -32,22 +47,46 @@ export default function ModalCrudSorteos({ abrirModal = false, title, setModalEd
     useEffect(() => {
         abrirModal ? open() : close()
     }, [abrirModal])
+    useEffect(() => {
+        getContests();
+    }, [])
+    useEffect(() => {
+        let tempNombresSorteos: any = []
+        let tempSorteos: any = []
+        state.payload.map((sorteo) => {
+            if (sorteo.createdBy.name === localStorageUser?.name) {
+                tempNombresSorteos.push({ label: sorteo.name, value: sorteo._id })
+            }
+        })
+        console.log(tempNombresSorteos);
+        // Actualizar estados
+        setNombresSorteos(tempNombresSorteos);
+        setSorteos(tempSorteos);
+
+    }, [state, localStorageUser])
+
+
     const handleDrop = (files: FileWithPath[]) => {
         setFiles(files);
         const previews = files.map((file, index) => {
             const imageUrl = URL.createObjectURL(file);
             return <Image key={index} src={imageUrl} onLoad={() => URL.revokeObjectURL(imageUrl)} />;
         });
-        setPost({ ...post, previewImg: previews[0] });
     };
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, field: string) => {
         setPost({ ...post, [field]: event.target.value });
         setNewValue({ ...newValue, [field]: event.target.value });
     };
+    const handleStatusChange = (value: any) => {
+        console.log(value);
+        setPost({ ...post, contestId: value });
+        setNewValue({ ...newValue, contestId: value });
+    };
 
     const handlePostPrizes = async () => {
-        await postApi('https://privatedevs.com/api-contest/api/v1/prizes/create', { name: post.name, description: post.description, contestId: "65f49180f37c5175e73b6d45", orderToLot: 3 })
+        console.log(post);
+        await postApi('https://privatedevs.com/api-contest/api/v1/prizes/create', { name: post.name, description: post.description, contestId: post.contestId, orderToLot: post.orderToLot })
         setPost(initialState);
         close();
     };
@@ -57,11 +96,16 @@ export default function ModalCrudSorteos({ abrirModal = false, title, setModalEd
         return <Image height={200} width={200} key={index} src={imageUrl} onLoad={() => URL.revokeObjectURL(imageUrl)} />;
     });
 
+
+
+
     return (
         <>
             <Modal opened={opened} onClose={() => { close(), setModalEdit(false) }} title={title} centered size="xl">
                 <Grid>
                     <InputCol label="Nombre del premio" placeholder={data?.name} onChange={(e: any) => handleInputChange(e, 'name')} value={newValue?.name} />
+                    <InputCol label="Orden de ronda" placeholder={data?.orderToLot} type='number' onChange={(e: any) => handleInputChange(e, 'orderToLot')} />
+                    <StatusCol onChange={handleStatusChange} sorteos={nombresSorteos} />
                     <TextCol label="Descripción" onChange={(e: any) => handleInputChange(e, 'description')} value={newValue?.description} />
                     <DropzoneCol onDrop={handleDrop} />
                     <PreviewCol previews={previews} />
@@ -84,6 +128,16 @@ const TextCol = ({ label, placeholder, onChange, value }: any) => (
     </Grid.Col>
 );
 
+const StatusCol = ({ onChange, placeholder = "OPEN | PENDING | FINISHED", sorteos }: any) => (
+    <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
+        <Select
+            label="Estado del sorteo"
+            placeholder={placeholder}
+            data={sorteos}
+            onChange={onChange}
+        />
+    </Grid.Col>
+);
 
 const DropzoneCol = ({ onDrop, ...props }: any) => (
     <Grid.Col span={{ base: 12, md: 6, lg: 8 }}>
@@ -124,3 +178,4 @@ const ButtonCol = ({ onClick }: any) => (
         </Group>
     </Grid.Col>
 );
+

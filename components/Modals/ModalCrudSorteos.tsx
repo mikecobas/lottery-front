@@ -1,10 +1,11 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { Grid, Select, TextInput, Text, Image, SimpleGrid, Group, rem, Center, Card, Button, Skeleton, Modal } from '@mantine/core'
 import { Dropzone, IMAGE_MIME_TYPE, FileWithPath, } from '@mantine/dropzone';
 import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react';
 import { Contest } from '@/interfaces/constest.inteface';
 import useModalCrudSorteos from '@/hooks/useModalCrudSorteos';
+import useImageUploader from '@/hooks/useImages';
 const initialState = { name: "", contestStatus: "", rounds: 0, contestDate: "", previewImg: <Skeleton height={160} /> };
 interface ModalCrudSorteosProps {
     abrirModal?: boolean;
@@ -24,22 +25,28 @@ export default function ModalCrudSorteos({ action, abrirModal = false, title, se
     createdAt: "",
     contestStatus: "",
 } }: ModalCrudSorteosProps) {
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const { uploadImage } = useImageUploader();
     const { setFiles, setPost, post, files, opened, handleInputChange, newValue, handleStatusChange, handlePostContest, getContests }
         = useModalCrudSorteos(data, abrirModal, setModalEdit, initialState, action, data._id);
-    const handleDrop = (files: FileWithPath[]) => {
-        setFiles(files);
-        const previews = files.map((file, index) => {
-            const imageUrl = URL.createObjectURL(file);
-            return <Image key={index} src={imageUrl} onLoad={() => URL.revokeObjectURL(imageUrl)} />;
-        });
-        setPost({ ...post, previewImg: previews[0] });
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files.length > 0) {
+            setImageFile(event.target.files[0]);
+        }
     };
 
-    const previews = files.map((file, index) => {
-        const imageUrl = URL.createObjectURL(file);
-        return <Image height={200} width={200} key={index} src={imageUrl} onLoad={() => URL.revokeObjectURL(imageUrl)} />;
-    });
+    const handlePostContests = async () => {
+        const action: string = 'create';
 
+
+        if (imageFile) {
+            await uploadImage(`https://privatedevs.com/api-contest/api/v1/uploads/contest/${data._id}`, imageFile, "POST");
+        }
+        // 
+        setPost(initialState);
+        close();
+    };
     return (
         <>
             <Modal opened={opened} onClose={() => { close(), setModalEdit(false) }} title={title} centered size="xl">
@@ -54,12 +61,11 @@ export default function ModalCrudSorteos({ action, abrirModal = false, title, se
                     {
                         action === "edit" ? (
                             <>
-                                <DropzoneCol onDrop={handleDrop} />
-                                <PreviewCol previews={previews} />
+                                <InputCol label="imagen" placeholder="imagen" type='file' onChange={handleFileChange} />
                             </>
                         ) : null
                     }
-                    <ButtonCol onClick={() => { handlePostContest(), getContests(), setModalEdit(false) }} />
+                    <ButtonCol onClick={() => { handlePostContest(), getContests(), setModalEdit(false), handlePostContests() }} />
                 </Grid>
             </Modal>
         </>

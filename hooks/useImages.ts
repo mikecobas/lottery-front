@@ -6,7 +6,7 @@ const useImageUploader = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
-  const uploadImage = async (url: any, imageFile: any) => {
+  const uploadImage = async (url: any, imageFile: any, method = "POST") => {
     setLoading(true);
     setError(null);
     setSuccess(false);
@@ -16,7 +16,7 @@ const useImageUploader = () => {
       formData.append("file", imageFile);
 
       const response = await fetch(url, {
-        method: "PUT",
+        method: method,
         body: formData,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

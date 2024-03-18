@@ -54,12 +54,13 @@ export default function ModalCrudSorteos({ action, abrirModal = false, title, se
         let tempNombresSorteos: any = []
         let tempSorteos: any = []
         state.payload.map((sorteo) => {
-            if (sorteo.createdBy.name === localStorageUser?.name) {
+            if (sorteo.createdBy.name === localStorageUser?.name && sorteo.status === true) {
                 tempNombresSorteos.push({ label: sorteo.name, value: sorteo._id })
             }
         })
         setNombresSorteos(tempNombresSorteos);
         setSorteos(tempSorteos);
+        console.log(state);
     }, [state, localStorageUser])
 
 
@@ -82,7 +83,6 @@ export default function ModalCrudSorteos({ action, abrirModal = false, title, se
     };
 
     const handlePostPrizes = async () => {
-        console.log(post);
         if (action === 'create') {
             await postApi('https://privatedevs.com/api-contest/api/v1/prizes/create', { name: post.name, description: post.description, contestId: post.contestId, orderToLot: post.orderToLot });
         } else if (action === 'edit' && data) {

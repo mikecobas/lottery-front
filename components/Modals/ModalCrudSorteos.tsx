@@ -11,8 +11,9 @@ interface ModalCrudSorteosProps {
     title?: string
     setModalEdit?: (value: boolean) => void
     data?: Contest
+    action: "create" | "edit"
 }
-export default function ModalCrudSorteos({ abrirModal = false, title, setModalEdit = () => { }, data = {
+export default function ModalCrudSorteos({ action, abrirModal = false, title, setModalEdit = () => { }, data = {
     _id: "",
     name: "",
     status: false,
@@ -23,7 +24,8 @@ export default function ModalCrudSorteos({ abrirModal = false, title, setModalEd
     createdAt: "",
     contestStatus: "",
 } }: ModalCrudSorteosProps) {
-    const { setFiles, setPost, post, files, opened, handleInputChange, newValue, handleStatusChange, handlePostContest, getContests } = useModalCrudSorteos(data, abrirModal, setModalEdit, initialState);
+    const { setFiles, setPost, post, files, opened, handleInputChange, newValue, handleStatusChange, handlePostContest, getContests }
+        = useModalCrudSorteos(data, abrirModal, setModalEdit, initialState, action, data._id);
     const handleDrop = (files: FileWithPath[]) => {
         setFiles(files);
         const previews = files.map((file, index) => {
@@ -42,10 +44,13 @@ export default function ModalCrudSorteos({ abrirModal = false, title, setModalEd
         <>
             <Modal opened={opened} onClose={() => { close(), setModalEdit(false) }} title={title} centered size="xl">
                 <Grid>
-                    <InputCol label="Nombre del sorteo" placeholder={data?.name} onChange={(e: any) => handleInputChange(e, 'name')} value={newValue?.name} />
+                    <InputCol label="Nombre del sorteo" placeholder={data?.name}
+                        onChange={(e: any) => handleInputChange(e, 'name')} value={newValue?.name} />
                     <StatusCol placeholder={data?.contestStatus} onChange={handleStatusChange} />
-                    <InputCol label="Numero de rondas" placeholder={data?.rounds} type='number' onChange={(e: any) => handleInputChange(e, 'rounds')} value={newValue?.rounds} />
-                    <InputCol label="Fecha del sorteo" type="datetime-local" onChange={(e: any) => handleInputChange(e, 'contestDate')} value={newValue?.contestDate} />
+                    <InputCol label="Numero de rondas" placeholder={data?.rounds} type='number'
+                        onChange={(e: any) => handleInputChange(e, 'rounds')} value={newValue?.rounds} />
+                    <InputCol label="Fecha del sorteo" type="datetime-local"
+                        onChange={(e: any) => handleInputChange(e, 'contestDate')} value={newValue?.contestDate} />
                     <DropzoneCol onDrop={handleDrop} />
                     <PreviewCol previews={previews} />
                     <ButtonCol onClick={() => { handlePostContest(), getContests(), setModalEdit(false) }} />

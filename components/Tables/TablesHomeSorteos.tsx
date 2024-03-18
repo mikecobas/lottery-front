@@ -1,21 +1,22 @@
 'use client'
 import { ContestContext } from '@/contexts/ContestContext';
 import useContest from '@/hooks/useConstest';
-import { ActionIcon, Card, Group, Modal, Table, TextInput, Title } from '@mantine/core';
+import { ActionIcon, Button, Card, Group, Table, TextInput, Title } from '@mantine/core';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import { useContext, useEffect, useState } from 'react';
 import ModalCrudSorteos from '../Modals/ModalCrudSorteos';
 import { ModalDelete } from '../Modals/ModalDelete';
 import { Contest } from '@/interfaces/constest.inteface';
-
+type action = 'edit' | 'create'
 export function TableHomeSorteos() {
     const { getContests } = useContest()
     useEffect(() => {
         getContests();
     }, [])
-    
+
     const { state } = useContext(ContestContext);
     const [openModalEdit, setOpenModalEdit] = useState(false)
+    const [action, setaction] = useState<action>("create")
     const [openModalDelete, setOpenModalDelete] = useState(false)
     const [data, setData] = useState<Contest>()
     const rows = state.payload.map((contest, index) => (
@@ -26,7 +27,7 @@ export function TableHomeSorteos() {
             <Table.Td>{contest.createdBy.name}</Table.Td>
             <Table.Td>
                 <Group>
-                    <ActionIcon variant="filled" aria-label="Settings" onClick={() => { setOpenModalEdit(true), setData(contest) }}>
+                    <ActionIcon variant="filled" aria-label="Settings" onClick={() => { setOpenModalEdit(true), setData(contest), setaction("edit") }}>
                         <IconEdit style={{ width: '70%', height: '70%' }} stroke={1.5} />
                     </ActionIcon>
                     <ActionIcon variant="filled" color="red" aria-label="Settings" onClick={() => { setOpenModalDelete(true), setData(contest) }} >
@@ -43,7 +44,7 @@ export function TableHomeSorteos() {
             <Card>
                 <Group justify="space-between" pb={24}>
                     <Title order={1}>Sorteos</Title>
-                    <TextInput placeholder='Buscar sorteo' />
+                    <Button onClick={() => { setOpenModalEdit(true), setaction("create") }}>Crear sorteo</Button>
                 </Group>
                 <Table.ScrollContainer minWidth={500} h={350}>
                     <Table striped   >
@@ -60,7 +61,7 @@ export function TableHomeSorteos() {
                     </Table>
                 </Table.ScrollContainer>
             </Card>
-            <ModalCrudSorteos abrirModal={openModalEdit} setModalEdit={setOpenModalEdit} title='Editar sorteo' data={data} />
+            <ModalCrudSorteos abrirModal={openModalEdit} setModalEdit={setOpenModalEdit} title='Editar sorteo' data={data} action={action} />
             <ModalDelete abrirModal={openModalDelete} setModalDelete={setOpenModalDelete} title='sorteo: ' data={data} />
         </>
     );

@@ -3,20 +3,20 @@ import { useEffect, useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { FileWithPath } from "@mantine/dropzone";
 import useContestPost from "@/hooks/useContestPost";
-
 import { Contest } from "@/interfaces/constest.inteface";
-import { Image, Skeleton } from "@mantine/core";
 import useContest from "./useConstest";
-import { get } from "http";
+
 
 export default function useModalCrudSorteos(
   data: Contest,
   abrirModal: boolean,
   setModalEdit: (value: boolean) => void,
-  initialState: any
+  initialState: any,
+  action: "create" | "edit",
+  id?: string
 ) {
   const { getContests } = useContest();
-  const { postContest } = useContestPost();
+  const { postContest } = useContestPost(action, id);
   const [opened, { open, close }] = useDisclosure(false);
   const [post, setPost] = useState(initialState);
   const [newValue, setNewValue] = useState(data);

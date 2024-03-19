@@ -40,24 +40,24 @@ export default function SorteoPage({ params }: { params: { id: string } }) {
   }, [timeLeft])
 
 
-  useEffect(() => {
-    socket.on('connect', () => {
-      console.log('Connected to server');
-    });
+  // useEffect(() => {
+  //   socket.on('connect', () => {
+  //     console.log('Connected to server');
+  //   });
     
-    socket.on('contestUpdated ', (payload) =>{
-      console.log(payload)
-      getPrices()
-    })
+  //   socket.on('contestUpdated ', (payload) =>{
+  //     console.log(payload)
+  //     getPrices()
+  //   })
 
-    socket.on("error", (error) => {
-      console.log(error)
-    });
+  //   socket.on("error", (error) => {
+  //     console.log(error)
+  //   });
 
-    return () => {
-      socket.off('connect');
-    };
-  }, [socket]);
+  //   return () => {
+  //     socket.off('connect');
+  //   };
+  // }, [socket]);
 
   useEffect(() => {
     setPrizes(data?.payload.prizes)
